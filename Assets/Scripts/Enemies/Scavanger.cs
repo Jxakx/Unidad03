@@ -1,167 +1,192 @@
+ï»¿using System;
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Scavanger : Entity
+public class Scavanger : MonoBehaviour, IDamagiable
 {
-    [Header("Búsqueda")]
-    public float radioBusqueda;
-    public LayerMask capaJugador;
+    [Header("Enemigo")]
+    [SerializeField] private float _maxHealth;
+    [SerializeField] private float _currentHealth;
+    [SerializeField] private float _damage;
 
     [Header("Movimiento")]
-    public float velocidadMovimiento;
-    public float distanciaMaxima;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _distAttack;
+    [SerializeField] private List<Transform> _movPoints;
+    private int _indexMovPoints = 0;
+    private Vector3 _dir;
+    private Action _currentState;
+    private bool _canShase = true;
 
-    [Header("Rotación")]
-    public float velocidadRotacion = 5f;
-    [Tooltip("Ángulo en grados para corregir la orientación del modelo")]
-    public float offsetY = 90f;
+    [Header("RotaciÃ³n")]
+    [SerializeField] private float _speedRotation = 5f;
+    [Tooltip("Ãngulo en grados para corregir la orientaciÃ³n del modelo")]
+    [SerializeField] private float offsetY = 90f;
 
     [Header("Referencias")]
-    public Rigidbody rb;
-    public Animator anim;
+    [SerializeField] private Animator _anim;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _soundDamage;
+    [SerializeField] private AudioClip _soundAttack;
 
-    private Transform transformJugador;
-    private Vector3 puntoInicial;
-    private Coroutine esperaCoroutine;
+    [Header("Externos")]
+    [SerializeField] private PlayerMovement _playerScript;
+    [SerializeField] private Transform _playerTransform;
+    private Vector3 _dirPlayer;
+    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private Transform _origen;
 
-    public enum EstadosMovimiento { Esperando, Siguiendo, Volviendo, PerdiendoJugador }
-    public EstadosMovimiento estadoActual;
+    [Header("Target")]
+    public Transform targetPoint;
+    public float distBorrar;
+    [SerializeField] private bool _canAttack = true;
+    [SerializeField] private float _distAttackDamage;
+
 
     private void Start()
     {
-        puntoInicial = transform.position;
-        estadoActual = EstadosMovimiento.Esperando;
-        ResetAnimatorParameters();
-        anim.SetBool("isIdle", true);
+        _currentHealth = _maxHealth;
+        _anim.SetBool("isWalking", true);
+        _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+        _currentState = WalkingArround;
     }
 
     private void Update()
     {
-        switch (estadoActual)
+        distBorrar = Vector3.Distance(transform.position, _playerScript.transform.position);
+        _currentState();
+
+        _dirPlayer = (_playerTransform.position - _origen.position).normalized;
+
+        Debug.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
+
+        if (Physics.Raycast(transform.position, _dirPlayer, out RaycastHit hit, _distAttack, _playerLayer))
         {
-            case EstadosMovimiento.Esperando: EstadoEsperando(); break;
-            case EstadosMovimiento.Siguiendo: EstadoSiguiendo(); break;
-            case EstadosMovimiento.Volviendo: EstadoVolviendo(); break;
-            case EstadosMovimiento.PerdiendoJugador: break;
-        }
-    }
-
-    private void ResetAnimatorParameters()
-    {
-        anim.SetBool("isRunning", false);
-        anim.SetBool("isWalking", false);
-        anim.SetBool("isIdle", false);
-    }
-
-    private void EstadoEsperando()
-    {
-        ResetAnimatorParameters();
-        anim.SetBool("isIdle", true);
-
-        Collider hit = Physics.OverlapSphere(transform.position, radioBusqueda, capaJugador)
-                         .FirstOrDefault();
-        if (hit != null)
-        {
-            transformJugador = hit.transform;
-            estadoActual = EstadosMovimiento.Siguiendo;
-            ResetAnimatorParameters();
-            anim.SetBool("isRunning", true);
-        }
-    }
-
-    private void EstadoSiguiendo()
-    {
-        velocidadMovimiento = 10f;
-
-        if (!JugadorEnRadioBusqueda())
-        {
-            IniciarEspera();
-            return;
-        }
-
-        if (Vector3.Distance(transform.position, puntoInicial) > distanciaMaxima ||
-            Vector3.Distance(transform.position, transformJugador.position) > distanciaMaxima)
-        {
-            IniciarEspera();
-            return;
-        }
-
-        Vector3 dir = transformJugador.position - transform.position;
-        dir.y = 0;
-        dir.Normalize();
-
-        GirarHacia(transformJugador.position);
-        rb.velocity = new Vector3(dir.x * velocidadMovimiento, rb.velocity.y, dir.z * velocidadMovimiento);
-    }
-
-    private void IniciarEspera()
-    {
-        rb.velocity = Vector3.zero;
-        ResetAnimatorParameters();
-        anim.SetBool("isIdle", true);
-
-        estadoActual = EstadosMovimiento.PerdiendoJugador;
-
-        if (esperaCoroutine != null) StopCoroutine(esperaCoroutine);
-        esperaCoroutine = StartCoroutine(EsperarAntesDeVolver(2f));
-    }
-
-    private void EstadoVolviendo()
-    {
-        velocidadMovimiento = 6.5f;
-
-        ResetAnimatorParameters();
-        anim.SetBool("isWalking", true);
-
-        Vector3 dir = puntoInicial - transform.position;
-        dir.y = 0;
-        dir.Normalize();
-
-        GirarHacia(puntoInicial);
-        rb.velocity = new Vector3(dir.x * velocidadMovimiento, rb.velocity.y, dir.z * velocidadMovimiento);
-
-        if (Vector3.Distance(transform.position, puntoInicial) < 0.5f)
-        {
-            rb.velocity = Vector3.zero;
-            ResetAnimatorParameters();
-            anim.SetBool("isIdle", true);
-            estadoActual = EstadosMovimiento.Esperando;
-        }
-    }
-
-    private IEnumerator EsperarAntesDeVolver(float segundos)
-    {
-        yield return new WaitForSeconds(segundos);
-
-        if (JugadorEnRadioBusqueda() &&
-            Vector3.Distance(transform.position, puntoInicial) <= distanciaMaxima &&
-            Vector3.Distance(transform.position, transformJugador.position) <= distanciaMaxima)
-        {
-            ResetAnimatorParameters();
-            anim.SetBool("isRunning", true);
-            estadoActual = EstadosMovimiento.Siguiendo;
-        }
+            if (hit.transform.gameObject.layer == _playerTransform.gameObject.layer)
+            {
+                
+                //El player esta en el rango de ataque
+                if (Vector3.Distance(transform.position, _playerScript.transform.position) <= _distAttackDamage)
+                {
+                    //Lo alcance, debo atacar
+                    if (_canAttack)
+                    {
+                        ResetAnimatorParameters();
+                        _anim.SetBool("isAttacking", true);
+                        _currentState = LookToAttack;
+                        _canShase = true;
+                        _canAttack = false;
+                    }
+                }
+                else
+                {
+                    //El player esta en el rango de vision del enemigo y lo estoy persiguiendo
+                    if (_canShase && !_playerScript.IsInvisible)
+                    {
+                        ResetAnimatorParameters();
+                        _anim.SetBool("isRunning", true);
+                        _currentState = ShasePlayer;
+                        _canShase = false;
+                        _canAttack = true;
+                    }
+                    else if (_playerScript.IsInvisible)
+                    {
+                        ResetAnimatorParameters();
+                        _anim.SetBool("isWalking", true);
+                        _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+                        _currentState = WalkingArround;
+                        _canShase = true;
+                        _canAttack = true;
+                    }
+                }
+            }
+        } 
         else
         {
-            ResetAnimatorParameters();
-            anim.SetBool("isWalking", true);
-            estadoActual = EstadosMovimiento.Volviendo;
+            //Salio del rango de vision
+            if (!_canShase)
+            {
+                ResetAnimatorParameters();
+                _anim.SetBool("isWalking", true);
+                _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+                _currentState = WalkingArround;
+                _canShase = true;
+                _canAttack = true;
+            }
         }
-
-        esperaCoroutine = null;
     }
 
-    private bool JugadorEnRadioBusqueda()
+    
+    private void LookToAttack()
     {
-        if (transformJugador == null) return false;
-        return Physics.OverlapSphere(transform.position, radioBusqueda, capaJugador)
-                     .Any(c => c.transform == transformJugador);
+        GirarHacia(_playerTransform.position, 1.5f);
     }
 
-    private void GirarHacia(Vector3 objetivo)
+    public void Attack()
     {
-        Vector3 direccion = (objetivo - transform.position);
+        print("Hice daÃ±o");
+        _audioSource.PlayOneShot(_soundAttack);
+        if (Vector3.Distance(transform.position, _playerScript.transform.position) <= _distAttackDamage)
+        {
+            _playerScript.Damage(_damage);
+        }
+    }
+
+    private void Idle()
+    {
+        //Lo que sea que haga en idle
+    }
+
+    private void WalkingArround()
+    {
+        //Aqui hace la ronda entre los puntos
+        transform.position += _dir * _speed * Time.deltaTime;
+        GirarHacia(_movPoints[_indexMovPoints].transform.position);
+
+        Debug.DrawLine(_origen.position, _origen.position + _dir * 6);
+
+        if (Vector3.Distance(transform.position, _movPoints[_indexMovPoints].transform.position) < 1f)
+        {
+            //Llego al punto
+            if (_indexMovPoints == _movPoints.Count - 1)
+            {
+                _indexMovPoints = 0;
+            }
+            else
+            {
+                _indexMovPoints++;
+            }
+
+            _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+
+
+            ResetAnimatorParameters();
+            _anim.SetBool("isIdle", true);
+            StartCoroutine(TimerIdle());
+            _currentState = Idle;
+        }
+    }
+
+    private void ShasePlayer()
+    {
+        transform.position += _dirPlayer * _speed * 1.1f * Time.deltaTime;
+        GirarHacia(_playerTransform.position, 1.5f);
+
+        if (Vector3.Distance(transform.position, _playerTransform.position) < 1f)
+        {
+            //Llego al punto, ahora debe atacar
+
+            //ResetAnimatorParameters();
+            //_anim.SetBool("isIdle", true);
+            //_currentState = Attack;
+        }
+    }
+
+    
+    private void GirarHacia(Vector3 target)
+    {
+        Vector3 direccion = (target - transform.position);
         direccion.y = 0;
         if (direccion.sqrMagnitude < 0.001f) return;
 
@@ -169,16 +194,51 @@ public class Scavanger : Entity
         Quaternion rotCorregida = rotDeseada * Quaternion.Euler(0, offsetY, 0);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, rotCorregida,
-                                              velocidadRotacion * Time.deltaTime);
+                                              _speedRotation * Time.deltaTime);
     }
 
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, radioBusqueda);
+    private void GirarHacia(Vector3 target, float moreSpeed)
+    {
+        Vector3 direccion = (target - transform.position);
+        direccion.y = 0;
+        if (direccion.sqrMagnitude < 0.001f) return;
 
-    //    Vector3 origin = Application.isPlaying ? puntoInicial : transform.position;
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawWireSphere(origin, distanciaMaxima);
-    //}
+        Quaternion rotDeseada = Quaternion.LookRotation(direccion.normalized, Vector3.up);
+        Quaternion rotCorregida = rotDeseada * Quaternion.Euler(0, offsetY, 0);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotCorregida,
+                                              _speedRotation * moreSpeed * Time.deltaTime);
+    }
+
+    private void ResetAnimatorParameters()
+    {
+        _anim.SetBool("isAttacking", false);
+        _anim.SetBool("isRunning", false);
+        _anim.SetBool("isWalking", false);
+        _anim.SetBool("isIdle", false);
+    }
+
+    private IEnumerator TimerIdle()
+    {
+        yield return new WaitForSeconds(2);
+        ResetAnimatorParameters();
+        _currentState = WalkingArround;
+        _anim.SetBool("isWalking", true);
+    }
+
+    public void Health(float health)
+    {
+    }
+
+    public void Damage(float damage)
+    {
+        _currentHealth -= damage;
+        _audioSource.PlayOneShot(_soundDamage);
+
+        if (_currentHealth <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
 }
