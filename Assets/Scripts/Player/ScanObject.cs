@@ -6,48 +6,48 @@ public class ScanObject : MonoBehaviour
 {
     public GameObject scanPanel;
     public TMP_Text scanPromptText;
-    public GameObject scanResultObject;
+    //public GameObject scanResultObject;
 
     private bool isPlayerInRange = false;
-    private bool isScanning = false;
+    // private bool isScanning = false;
 
     private void Start()
     {
         scanPanel.SetActive(false);
-        scanResultObject.SetActive(false);
+        // scanResultObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && !isScanning)
-        {
-            StartCoroutine(StartScan());
-        }
+        // if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && !isScanning)
+        // {
+        //     StartCoroutine(StartScan());
+        // }
     }
 
-    private IEnumerator StartScan()
-    {
-        isScanning = true;
-        scanPromptText.gameObject.SetActive(false);
+    // private IEnumerator StartScan()
+    // {
+    //     isScanning = true;
+    //     scanPromptText.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(3f); // Simula tiempo de escaneo
+    //     yield return new WaitForSeconds(3f); // Simula tiempo de escaneo
 
-        scanResultObject.SetActive(true); // Activa objeto 3D
+    //     scanResultObject.SetActive(true); // Activa objeto 3D
 
-        yield return new WaitForSeconds(5f); // Muestra objeto durante 5s
+    //     yield return new WaitForSeconds(5f); // Muestra objeto durante 5s
 
-        scanResultObject.SetActive(false);
-        scanPromptText.gameObject.SetActive(true);
-        isScanning = false;
-    }
+    //     scanResultObject.SetActive(false);
+    //     scanPromptText.gameObject.SetActive(true);
+    //     isScanning = false;
+    // }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = true;
-            if (!isScanning)
-                scanPanel.SetActive(true);
+            // if (!isScanning)
+            scanPanel.SetActive(true);
         }
     }
 
