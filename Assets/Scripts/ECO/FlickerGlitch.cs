@@ -4,13 +4,13 @@ using System.Collections;
 public class FlickerGlitch : MonoBehaviour
 {
     [Header("Targets Sequence")]
-    public GameObject[] targets;            // Array de GameObjects a mostrar en secuencia
-    public GameObject lightObject;          // GameObject que contiene la luz proyectora
-    public ParticleSystem particleSystem;   // Sistema de partículas a mostrar durante la secuencia
+    public GameObject[] targets;
+    public GameObject lightObject;
+    public ParticleSystem particleSystem;
 
     [Header("Audio Clips")]
-    public AudioClip glitchSound;           // Sonido al iniciar y al apagar cada uno
-    public AudioClip onSound;               // Sonido cuando cada uno se mantiene encendido (loopable)
+    public AudioClip glitchSound;
+    public AudioClip onSound;
 
     [Header("Trigger Key & Cooldown")]
     public KeyCode triggerKey = KeyCode.E;
@@ -28,13 +28,14 @@ public class FlickerGlitch : MonoBehaviour
     private AudioSource audioSource;
     private int currentIdx = -1;
 
+    // NUEVO: para detectar si el jugador está en rango
+    private bool isPlayerInRange = false;
+
     void Awake()
     {
-        // Obtener o crear AudioSource para reproducir clips
         audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         audioSource.loop = false;
 
-        // Apagar todos los targets, la luz y las partículas al iniciar
         if (targets != null)
         {
             foreach (var go in targets)
@@ -48,7 +49,6 @@ public class FlickerGlitch : MonoBehaviour
 
     void Update()
     {
-        // Hacer que la luz siga al target actual
         if (lightObject != null && isRunning && currentIdx >= 0 && currentIdx < targets.Length)
         {
             var tgt = targets[currentIdx];
@@ -56,8 +56,8 @@ public class FlickerGlitch : MonoBehaviour
                 lightObject.transform.LookAt(tgt.transform.position);
         }
 
-        // Disparo de la acción con cooldown
-        if (Input.GetKeyDown(triggerKey) && Time.time >= nextAvailableTime && !isRunning)
+        // SOLO si el jugador está en rango se puede activar con E
+        if (isPlayerInRange && Input.GetKeyDown(triggerKey) && Time.time >= nextAvailableTime && !isRunning)
         {
             StartCoroutine(RunSequence());
         }
@@ -68,7 +68,6 @@ public class FlickerGlitch : MonoBehaviour
         isRunning = true;
         nextAvailableTime = Time.time + keyCooldown;
 
-        // Iniciar partículas
         if (particleSystem)
             particleSystem.Play();
 
@@ -78,24 +77,19 @@ public class FlickerGlitch : MonoBehaviour
             var go = targets[i];
             if (go == null) continue;
 
-            // Detener cualquier sonido previo
             audioSource.Stop();
 
-            // Sonido de glitch inicial
             if (glitchSound != null)
             {
                 audioSource.loop = false;
                 audioSource.PlayOneShot(glitchSound);
             }
 
-            // Flicker encendiendo este GO y luz
             yield return StartCoroutine(Flicker(go, lightObject, true, flickerCountOn, flickerDurationOn));
 
-            // Estado encendido
             SetState(go, true);
             if (lightObject) SetState(lightObject, true);
 
-            // Sonido al quedar encendido (loop)
             if (onSound != null)
             {
                 audioSource.clip = onSound;
@@ -103,27 +97,22 @@ public class FlickerGlitch : MonoBehaviour
                 audioSource.Play();
             }
 
-            // Mantener encendido
             yield return new WaitForSeconds(onDuration);
 
-            // Sonido de glitch antes de apagar
             if (glitchSound != null)
             {
                 audioSource.loop = false;
                 audioSource.PlayOneShot(glitchSound);
             }
 
-            // Flicker apagando este GO y luz
             yield return StartCoroutine(Flicker(go, lightObject, false, flickerCountOff, flickerDurationOff));
 
             SetState(go, false);
             if (lightObject) SetState(lightObject, false);
 
-            // Asegurar que el loop de onSound se detenga
             audioSource.Stop();
         }
 
-        // Finalizar partículas y secuencia
         if (particleSystem)
             particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
@@ -148,5 +137,22 @@ public class FlickerGlitch : MonoBehaviour
     void SetState(GameObject go, bool on)
     {
         if (go) go.SetActive(on);
+    }
+
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInRange = false;
+        }
     }
 }

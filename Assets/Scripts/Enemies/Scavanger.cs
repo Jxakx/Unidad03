@@ -170,7 +170,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
 
     private void ShasePlayer()
     {
-        transform.position += _dirPlayer * _speed * 1.1f * Time.deltaTime;
+        transform.position += _dirPlayer * _speed * 1.5f * Time.deltaTime;
         GirarHacia(_playerTransform.position, 1.5f);
 
         if (Vector3.Distance(transform.position, _playerTransform.position) < 1f)
