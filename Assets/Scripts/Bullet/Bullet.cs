@@ -45,11 +45,11 @@ public class Bullet : MonoBehaviour
 
     private void FindNearestEnemy()
     {
-        ScavangerEdu[] enemies = FindObjectsOfType<ScavangerEdu>();
+        Scavanger[] enemies = FindObjectsOfType<Scavanger>();
         float minDistance = Mathf.Infinity;
-        ScavangerEdu nearestEnemy = null;
+        Scavanger nearestEnemy = null;
 
-        foreach (ScavangerEdu enemy in enemies)
+        foreach (Scavanger enemy in enemies)
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance < minDistance && distance <= _targetSearchRange) // Solo si está en rango
