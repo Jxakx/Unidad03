@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class InteractableText : MonoBehaviour
 {
@@ -39,9 +39,9 @@ public class InteractableText : MonoBehaviour
         {
             _player = go.transform;
         }
-        else 
-        { 
-            Debug.LogWarning("No se encontró ningún GameObject con tag 'Player'."); 
+        else
+        {
+            Debug.LogWarning("No se encontró ningún GameObject con tag 'Player'.");
         }
 
         // Instanciar el texto como objeto independiente
@@ -50,7 +50,9 @@ public class InteractableText : MonoBehaviour
             var goText = Instantiate(textPrefab.gameObject);
             _instanceTMP = goText.GetComponent<TextMeshPro>();
             _instanceTMP.gameObject.SetActive(false);
-            goText.transform.localScale = Vector3.one;
+
+            // Mantener la escala original del prefab
+            goText.transform.localScale = textPrefab.transform.localScale;
         }
         else
         {
@@ -66,16 +68,21 @@ public class InteractableText : MonoBehaviour
         if (_player == null || _instanceTMP == null || !interactableEnabled) return;
 
         float dist = Vector3.Distance(_player.position, transform.position);
-        bool shouldShow = dist <= showDistance; //Estoy cercano??
+        bool shouldShow = dist <= showDistance;
 
-        //Si la letra se ve y el player esta levitando
-        if (_instanceTMP.gameObject.activeSelf && _playerScript.ElementLevitated != null)
+        // Verificar si el objeto está en el inventario (es hijo del jugador)
+        bool isInInventory = transform.IsChildOf(_player);
+
+        // Si el objeto está siendo levitado o está en inventario, ocultar el texto
+        if ((_instanceTMP.gameObject.activeSelf && _playerScript.ElementLevitated != null) || isInInventory)
         {
             HideUILetter();
         }
 
-        if (_playerScript.ElementLevitated != null) return;
+        // Salir temprano si el objeto está levitado o en inventario
+        if (_playerScript.ElementLevitated != null || isInInventory) return;
 
+        // Manejar visibilidad del texto
         if (shouldShow && !_instanceTMP.gameObject.activeSelf && _isUIActivate)
         {
             _instanceTMP.text = message;
@@ -86,10 +93,15 @@ public class InteractableText : MonoBehaviour
             _instanceTMP.gameObject.SetActive(false);
         }
 
-        if (shouldShow)
+        // Animación y rotación solo si está activo y se debe mostrar
+        if (shouldShow && _instanceTMP.gameObject.activeSelf)
         {
             float floatOffset = Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
             Vector3 animatedOffset = new Vector3(localOffset.x, _baseY + floatOffset, localOffset.z);
+
+            // Mantener la escala original
+            _instanceTMP.transform.localScale = textPrefab.transform.localScale;
+
             _instanceTMP.transform.position = transform.position + animatedOffset;
 
             Vector3 dir = _instanceTMP.transform.position - Camera.main.transform.position;
@@ -97,7 +109,7 @@ public class InteractableText : MonoBehaviour
         }
     }
 
-    private void HideUILetter()
+    public void HideUILetter()
     {
         _instanceTMP.gameObject.SetActive(false);
     }

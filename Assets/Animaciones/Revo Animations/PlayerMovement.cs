@@ -230,6 +230,14 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         var myDriver = _elementDetected.GetComponent<IModules>();
         if (myDriver == null) return;
 
+        // Desactivar solo el componente de texto, no el objeto completo
+        InteractableText text = _elementDetected.GetComponent<InteractableText>();
+        if (text != null)
+        {
+            text.interactableEnabled = false; // Esto evitará que se muestre
+            text.HideUILetter(); // Oculta inmediatamente
+        }
+
         _weaponSelected = _elementDetected;
         _inventory.AddWeapon(_weaponSelected);
         _weaponSelected.transform.parent = transform;
