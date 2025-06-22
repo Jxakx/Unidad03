@@ -1,21 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
-public class RobotEyesFlickerObjects : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class RobotEyeFlicker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Luces")]
-    public Light eyeLightLeft;
-    public Light eyeLightRight;
+    [Header("Luces comunes")]
+    public List<Light> lightsToFlicker;
 
-    [Header("GameObjects de los ojos")]
-    public GameObject eyeObjLeft;
-    public GameObject eyeObjRight;
+    [Header("Objetos a parpadear")]
+    public List<GameObject> objectsToFlicker;
 
     [Header("Flicker settings")]
-    [Tooltip("Duración total del parpadeo (segundos)")]
     public float flickerDuration = 0.5f;
-    [Tooltip("Intervalo entre cada cambio de estado (segundos)")]
     public float flickerSpeed = 0.05f;
 
     [Header("Audio")]
@@ -23,29 +20,19 @@ public class RobotEyesFlickerObjects : MonoBehaviour, IPointerEnterHandler, IPoi
     public AudioClip hoverSfx;
 
     private Coroutine flickerRoutine;
-    private bool originalLeftActive;
-    private bool originalRightActive;
 
     void Start()
     {
-        // Guardamos el estado original de los eye GameObjects
-        originalLeftActive = eyeObjLeft.activeSelf;
-        originalRightActive = eyeObjRight.activeSelf;
-
-        // Empiezan todos apagados
-        eyeLightLeft.enabled = false;
-        eyeLightRight.enabled = false;
-        eyeObjLeft.SetActive(false);
-        eyeObjRight.SetActive(false);
+        // Apagar todo al inicio
+        foreach (var l in lightsToFlicker) l.enabled = false;
+        foreach (var o in objectsToFlicker) o.SetActive(false);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData e)
     {
-        // Arranca el parpadeo
         if (flickerRoutine != null) StopCoroutine(flickerRoutine);
         flickerRoutine = StartCoroutine(FlickerAndHold());
 
-        // Toca sonido de hover
         if (hoverSfx != null)
         {
             audioSource.pitch = Random.Range(0.9f, 1.1f);
@@ -53,14 +40,11 @@ public class RobotEyesFlickerObjects : MonoBehaviour, IPointerEnterHandler, IPoi
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData e)
     {
-        // Detiene el parpadeo y apaga todo al instante
         if (flickerRoutine != null) StopCoroutine(flickerRoutine);
-        eyeLightLeft.enabled = false;
-        eyeLightRight.enabled = false;
-        eyeObjLeft.SetActive(false);
-        eyeObjRight.SetActive(false);
+        foreach (var l in lightsToFlicker) l.enabled = false;
+        foreach (var o in objectsToFlicker) o.SetActive(false);
     }
 
     private IEnumerator FlickerAndHold()
@@ -70,22 +54,16 @@ public class RobotEyesFlickerObjects : MonoBehaviour, IPointerEnterHandler, IPoi
 
         while (elapsed < flickerDuration)
         {
-            // Alterna luces
-            eyeLightLeft.enabled = state;
-            eyeLightRight.enabled = state;
-            // Alterna GameObjects de ojos
-            eyeObjLeft.SetActive(state);
-            eyeObjRight.SetActive(state);
+            foreach (var l in lightsToFlicker) l.enabled = state;
+            foreach (var o in objectsToFlicker) o.SetActive(state);
 
             state = !state;
             elapsed += flickerSpeed;
             yield return new WaitForSeconds(flickerSpeed);
         }
 
-        // Deja todo ENCENDIDO al final
-        eyeLightLeft.enabled = true;
-        eyeLightRight.enabled = true;
-        eyeObjLeft.SetActive(originalLeftActive);
-        eyeObjRight.SetActive(originalRightActive);
+        // al final todo queda encendido
+        foreach (var l in lightsToFlicker) l.enabled = true;
+        foreach (var o in objectsToFlicker) o.SetActive(true);
     }
 }
