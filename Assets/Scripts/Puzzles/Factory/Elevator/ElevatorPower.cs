@@ -18,7 +18,9 @@ public class ElevatorPower : MonoBehaviour
     private bool hasPower = false;
     private bool playerOnPlatform = false;
     private bool isMoving = false;
+
     [SerializeField] private Light statusLight;
+    [SerializeField] private Light secondaryStatusLight;
 
     [Header("Sonido")]
     [SerializeField] private AudioSource audioSource;
@@ -46,6 +48,9 @@ public class ElevatorPower : MonoBehaviour
     {
         if (statusLight != null)
             statusLight.color = Color.red;
+
+        if (secondaryStatusLight != null)
+            secondaryStatusLight.color = Color.red;
     }
 
     private void Update()
@@ -61,7 +66,7 @@ public class ElevatorPower : MonoBehaviour
             }
             if (_indexBattery > _points.Count - 1)
             {
-                _activateAscensor=true;
+                _activateAscensor = true;
                 _isIntaling = false;
                 _battery.transform.SetParent(_batteryBox);
                 StartCoroutine(OpenCloseBoxBattery(_pointA));
@@ -88,10 +93,11 @@ public class ElevatorPower : MonoBehaviour
         hasPower = true;
         Debug.Log("Batería instalada, elevador con energía.");
 
-
-        // Cambiar luz a verde
         if (statusLight != null)
             statusLight.color = Color.green;
+
+        if (secondaryStatusLight != null)
+            secondaryStatusLight.color = Color.green;
 
         if (elevatorPromptPanel != null)
             elevatorPromptPanel.SetActive(false);
@@ -120,8 +126,6 @@ public class ElevatorPower : MonoBehaviour
         }
         else if (other.CompareTag("Player"))
         {
-            //SetPlayerOnPlatform(true);
-
             if (!hasPower)
             {
                 if (elevatorPromptPanel != null)
@@ -134,7 +138,7 @@ public class ElevatorPower : MonoBehaviour
             if (_batteryBox != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)
             {
                 StopAllCoroutines();
-                if(!_activateAscensor) StartCoroutine(OpenCloseBoxBattery(_pointB));
+                if (!_activateAscensor) StartCoroutine(OpenCloseBoxBattery(_pointB));
             }
         }
     }
@@ -148,7 +152,6 @@ public class ElevatorPower : MonoBehaviour
             yield return null;
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
@@ -183,7 +186,6 @@ public class ElevatorPower : MonoBehaviour
     {
         isMoving = true;
 
-        // Reproducir sonido de elevador
         if (audioSource != null && elevatorMoveClip != null)
         {
             audioSource.PlayOneShot(elevatorMoveClip);
@@ -209,6 +211,4 @@ public class ElevatorPower : MonoBehaviour
 
         isMoving = false;
     }
-
-   
 }
