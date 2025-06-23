@@ -25,11 +25,18 @@ public class Nota1Interactuable : MonoBehaviour
         {
             lorePanelUI.SetActive(true);
             loreText.text = diaryEntry;
+            interactTextUI.SetActive(false); 
         }
 
         if (lorePanelUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             lorePanelUI.SetActive(false);
+
+            // Mostrar nuevamente el cartel si aún estás en rango
+            if (isPlayerInRange)
+            {
+                interactTextUI.SetActive(true);
+            }
         }
     }
 
