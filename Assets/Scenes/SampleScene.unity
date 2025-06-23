@@ -4274,6 +4274,7 @@ GameObject:
   - component: {fileID: 153688822}
   - component: {fileID: 153688824}
   - component: {fileID: 153688823}
+  - component: {fileID: 153688825}
   m_Layer: 0
   m_Name: LuzElevador
   m_TagString: Untagged
@@ -4381,6 +4382,21 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &153688825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153688821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8bca95f7c947b4db5fb152a0d693d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anisotropy: 0.25
+  scattering: 1
+  radius: 0.2
 --- !u!1001 &155204391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33236,6 +33252,60 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009990058, y: 0.009337174, z: 0.011122789}
   m_Center: {x: -0.000000016763806, y: 4.656613e-10, z: -0.000000014901161}
+--- !u!1 &931201984
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 931201986}
+  - component: {fileID: 931201985}
+  m_Layer: 0
+  m_Name: EagleVision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &931201985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931201984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b022eb0e3228e204d9149c1d477d42f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveSpeed: 25
+  maxRadius: 150
+  fadeDuration: 2
+  waveWidth: 10
+  visionMaterial: {fileID: 0}
+  globalVolume: {fileID: 0}
+  volumeIntensity: 1
+  audioSource: {fileID: 0}
+  activationSound: {fileID: 0}
+  currentState: 0
+--- !u!4 &931201986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931201984}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -103.49894, y: -64.04355, z: 72.54001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3271667715992815716}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &933443945
 GameObject:
   m_ObjectHideFlags: 0
@@ -38361,6 +38431,7 @@ GameObject:
   - component: {fileID: 1146065439}
   - component: {fileID: 1146065441}
   - component: {fileID: 1146065440}
+  - component: {fileID: 1146065442}
   m_Layer: 0
   m_Name: LuzElevador (1)
   m_TagString: Untagged
@@ -38468,6 +38539,21 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &1146065442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146065438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8bca95f7c947b4db5fb152a0d693d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anisotropy: 0.25
+  scattering: 1
+  radius: 0.2
 --- !u!1 &1149286085
 GameObject:
   m_ObjectHideFlags: 0
@@ -48042,7 +48128,7 @@ MonoBehaviour:
     m_Bits: 64
   _myLitMaterial: {fileID: 2100000, guid: 614ecf5e8b73e1149a223f2eff236e79, type: 2}
   _canRadar: 1
-  _sphereEffect: {fileID: 1290695614179909571}
+  _eagleVision: {fileID: 0}
 --- !u!1001 &1473077950
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72197,6 +72283,7 @@ Transform:
   - {fileID: 7424229654976371615}
   - {fileID: 3977894096819906316}
   - {fileID: 1231961126}
+  - {fileID: 931201986}
   - {fileID: 881332877}
   - {fileID: 1989282966}
   m_Father: {fileID: 0}
@@ -72873,7 +72960,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07635597, y: -0.702855, z: 0.07633024, w: 0.703092}
+  m_LocalRotation: {x: 0.07635562, y: -0.70285505, z: 0.07632989, w: 0.70309204}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -79972,7 +80059,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6310855923633310631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.089099005, y: -0.7013545, z: 0.089068964, w: 0.701591}
+  m_LocalRotation: {x: 0.08909868, y: -0.70135456, z: 0.08906865, w: 0.7015911}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -81555,6 +81642,7 @@ MonoBehaviour:
   EnableMovement: 1
   IsDashing: 0
   _isInvisible: 0
+  _eagleVision: {fileID: 931201985}
   bodyRender: []
   _projectorPosition: {fileID: 8473917384596604533}
   _module1: {fileID: 7846711420864475314}
