@@ -10,29 +10,33 @@ public class WeaponRadar : Weapon
     [SerializeField] private Material _myLitMaterial;
     [SerializeField] private bool _canRadar = true;
 
-    [SerializeField] private SphereEffect _sphereEffect;
+    [SerializeField] private EagleVision _eagleVision;
 
     public float RadarRadious {  get {  return _radarRadious; } set { _radarRadious = value; } }
 
     public override void Initialized(PlayerMovement player)
     {
         base.Initialized(player);
+        // Obtener referencia al EagleVision del jugador
+        _eagleVision = player.GetComponent<EagleVision>();
     }
 
 
     public override void PowerElement()
     {
-        if (!_canRadar) return;
-        _sphereEffect.StartEffect();
+        if (!_canRadar || _eagleVision == null) return;
+
+        // Activar EagleVision en lugar del efecto de esfera
+        _eagleVision.ActivateVision();
+
+        // Detección de objetos (se mantiene igual)
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radarRadious, _targetLayer);
         foreach (Collider collider in hitColliders)
         {
             IPuzzlesElements myPuzzle = collider.GetComponent<IPuzzlesElements>();
-            if (myPuzzle != null)
-            {
-                myPuzzle.ActionPuzzle();
-            }
+            myPuzzle?.ActionPuzzle();
         }
+
         _canRadar = false;
         StartCoroutine(CanRadarAgain());
     }

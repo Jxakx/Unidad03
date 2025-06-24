@@ -41,14 +41,9 @@ public class EagleVision : MonoBehaviour
     {
         switch (currentState)
         {
-            case WaveState.Inactive:
-                if (Input.GetKeyDown(KeyCode.V)) ActivateVision();
-                break;
-
             case WaveState.Expanding:
                 UpdateExpansion();
                 break;
-
             case WaveState.Fading:
                 UpdateFading();
                 break;
@@ -101,14 +96,14 @@ public class EagleVision : MonoBehaviour
         }
     }
 
-    void ActivateVision()
+    public void ActivateVision()
     {
+        if (currentState != WaveState.Inactive) return;
+
         currentState = WaveState.Expanding;
         currentRadius = 0.1f;
         fadeTimer = 0f;
-        currentVolumeWeight = 0f; // Empezar desde 0 para animar
-
-        // Reproducir sonido de activación
+        currentVolumeWeight = 0f;
         PlayActivationSound();
     }
 

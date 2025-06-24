@@ -55,6 +55,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [HideInInspector] public bool IsDashing = false;
 
     [SerializeField] private bool _isInvisible = false;
+
+    [SerializeField] private EagleVision _eagleVision;
     public bool IsInvisible
     {
         get { return _isInvisible; }
@@ -89,6 +91,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _currentHealth = _maxHealth;
         _inventory = new Inventory(8, _element0);
         AddModules(_projectorPosition);
+        // Asegurar que existe el componente
+        if (_eagleVision == null)
+            _eagleVision = gameObject.AddComponent<EagleVision>();
     }
 
     void Update()
