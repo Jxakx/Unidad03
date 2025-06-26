@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a01d188a26328b4b920cdfdfa2d0def, type: 3}
   m_Name: VolumetricFogRendererFeatureLite
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   renderInSceneView: 1
   renderPassEvent: 500
   settings:
-    fogDownsampleLevel: 5
+    fogDownsampleLevel: 8
     fogMaterial: {fileID: 2100000, guid: f2e0e5c42022d3f4ca219877f7a15978, type: 2}
     depthMaterial: {fileID: 2100000, guid: 1d99b61e891acf84683aee11f0e05a8b, type: 2}
     compositeMaterial: {fileID: 2100000, guid: 03b06fe23c18b44479459d11dc405c49, type: 2}
