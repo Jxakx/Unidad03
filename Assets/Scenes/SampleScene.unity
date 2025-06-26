@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.43306363, g: 0.41998932, b: 0.6226415, a: 1}
+  m_FogColor: {r: 0.5829546, g: 0.56781775, b: 0.8301887, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -7620,6 +7620,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233710709}
   m_Mesh: {fileID: 7817772490143577013, guid: 9439a7f3dc9acdb45b24538010c7057d, type: 3}
+--- !u!1 &240390924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 240390926}
+  - component: {fileID: 240390925}
+  m_Layer: 0
+  m_Name: Global Volume DS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &240390925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240390924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 8ab7e7a5e36f4624d940232d38a12160, type: 2}
+--- !u!4 &240390926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240390924}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3790779, y: 8.232573, z: -66.50033}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &242436193
 GameObject:
   m_ObjectHideFlags: 0
@@ -10556,12 +10605,12 @@ GameObject:
   - component: {fileID: 360507246}
   - component: {fileID: 360507247}
   m_Layer: 0
-  m_Name: Global Volume
+  m_Name: Global Volume REV0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &360507246
 Transform:
   m_ObjectHideFlags: 0
@@ -80720,7 +80769,7 @@ Transform:
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
   m_LocalRotation: {x: 0.07635594, y: -0.7028548, z: 0.07633016, w: 0.70309216}
-  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
+  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -95278,6 +95327,7 @@ SceneRoots:
   - {fileID: 340095668}
   - {fileID: 1349046059}
   - {fileID: 360507246}
+  - {fileID: 240390926}
   - {fileID: 898946313}
   - {fileID: 608824778}
   - {fileID: 1801542984}
