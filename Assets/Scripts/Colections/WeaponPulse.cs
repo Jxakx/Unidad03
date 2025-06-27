@@ -12,9 +12,14 @@ public class WeaponPulse : Weapon
 
     public override void PowerElement()
     {
+        if (CurrentState != WeaponState.InInventory) return;
         base.PowerElement();
         Instantiate(_myBulletPrebaf, _instancePoint.position, transform.rotation);
         _player.CanWeaponChange = true;
     }
 
+    public override void ResetWeaponState()
+    {
+        base.ResetWeaponState();
+    }
 }

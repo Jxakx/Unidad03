@@ -37,14 +37,46 @@ public class Inventory
         }
     }
 
+    public void ReAddModule(GameObject module)
+    {
+        if (!_inventory.Contains(module))
+        {
+            _inventory.Add(module);
+            module.SetActive(false); // Se activará cuando se seleccione
+        }
+    }
+
+    public bool ContainsModule(GameObject module)
+    {
+        return _inventory.Contains(module);
+    }
     public void RemoveWeapon(GameObject weapon)
     {
-        if (weapon = _element0)
+        if (weapon == _element0) return;
+
+        int index = _inventory.IndexOf(weapon);
+        if (index != -1)
         {
-            Debug.Log("Elemento no eliminable");
-            return;
+            // Limpiar estado visual antes de remover
+            Weapon weaponComp = weapon.GetComponent<Weapon>();
+            if (weaponComp != null)
+            {
+                // Restaurar visuales del jugador
+                if (weaponComp is WeaponInvisible invisibleWeapon)
+                {
+                    invisibleWeapon.RecoveryMaterial();
+                }
+                weaponComp.MyBodyFBX.SetActive(false);
+            }
+
+            _inventory.RemoveAt(index);
+
+            if (_weaponSelected == index)
+            {
+                _weaponSelected = Mathf.Clamp(_weaponSelected - 1, 0, _inventory.Count - 1);
+                SelectWeapon(_weaponSelected);
+            }
         }
-        if (_inventory.Contains(weapon)) _inventory.Remove(weapon);
     }
 
     public GameObject SelectWeapon(int index)
@@ -62,6 +94,12 @@ public class Inventory
         return _inventory[_weaponSelected];
     }
 
+    //método para obtener un módulo por índice
+    public GameObject GetModuleAtIndex(int index)
+    {
+        if (index < 0 || index >= _inventory.Count) return null;
+        return _inventory[index];
+    }
     public Animator MyCurrentAnimator()
     {
         return _inventory[_weaponSelected].GetComponent<Weapon>().MyAnimator;

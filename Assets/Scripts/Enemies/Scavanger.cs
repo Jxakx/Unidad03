@@ -43,6 +43,9 @@ public class Scavanger : MonoBehaviour, IDamagiable
     [SerializeField] private bool _canAttack = true;
     [SerializeField] private float _distAttackDamage;
 
+    [Header("Robo de módulos")]
+    [SerializeField] private float _dropChance = 0.4f; // 40% de probabilidad
+    [SerializeField] private GameObject _modulePrefab; // Prefab para el módulo en el suelo
 
     private void Start()
     {
@@ -130,9 +133,36 @@ public class Scavanger : MonoBehaviour, IDamagiable
         if (Vector3.Distance(transform.position, _playerScript.transform.position) <= _distAttackDamage)
         {
             _playerScript.Damage(_damage);
+
+            // Lógica para robar módulo
+            if (UnityEngine.Random.value <= _dropChance && _playerScript.HasModules())
+            {
+                GameObject stolenModule = _playerScript.DropRandomModule();
+                if (stolenModule != null)
+                {
+                    DropModuleOnFloor(stolenModule);
+                }
+            }
         }
     }
 
+    // Nuevo método para crear el módulo en el suelo
+    private void DropModuleOnFloor(GameObject module)
+    {
+        // Posicionar ligeramente alejado del jugador
+        Vector3 dropPosition = _playerScript.transform.position +
+                              new Vector3(UnityEngine.Random.Range(-1f, 1f),
+                                          0.5f,
+                                          UnityEngine.Random.Range(-1f, 1f));
+
+        GameObject droppedModule = Instantiate(_modulePrefab, dropPosition, Quaternion.identity);
+
+        ModulePickup pickup = droppedModule.GetComponent<ModulePickup>();
+        if (pickup != null)
+        {
+            pickup.SetModule(module);
+        }
+    }
     private void Idle()
     {
         //Lo que sea que haga en idle

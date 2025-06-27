@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _elementLevitated = null;
     }
 
-    private void AddModules(Transform _position)
+    public void AddModules(Transform _position)
     {
         var myDriver = _elementDetected.GetComponent<IModules>();
         if (myDriver == null) return;
@@ -263,6 +263,61 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _animatorBasic.animator = _inventory.MyCurrentAnimator();
     }
 
+    // método para verificar si tiene módulos
+    public bool HasModules()
+    {
+        return _inventory.MyItemsCount() > 1; // 1 es el módulo base
+    }
+
+    public void AddDroppedModule(GameObject module)
+    {
+        float distance = Vector3.Distance(transform.position, module.transform.position);
+        if (distance < 2f) return; // No recoger si está muy cerca
+
+        if (module != null && !_inventory.ContainsModule(module))
+        {
+            Weapon weapon = module.GetComponent<Weapon>();
+            if (weapon != null)
+            {
+                weapon.SetInventoryState();
+            }
+
+            module.SetActive(true);
+            _inventory.ReAddModule(module);
+
+            module.transform.parent = transform;
+            Rigidbody rb = module.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+        }
+    }
+    // Método para soltar un módulo aleatorio
+    public GameObject DropRandomModule()
+    {
+        if (_inventory.MyItemsCount() <= 1) return null;
+
+        int randomIndex = UnityEngine.Random.Range(1, _inventory.MyItemsCount());
+        GameObject module = _inventory.GetModuleAtIndex(randomIndex);
+
+        Weapon weapon = module.GetComponent<Weapon>();
+        if (weapon != null)
+        {
+            weapon.SetDroppedState();
+        }
+
+        _inventory.RemoveWeapon(module);
+        module.SetActive(false);
+
+        if (_inventory.WeaponSelected == randomIndex)
+        {
+            SelectModule(0);
+        }
+
+        return module;
+    }
     #region Detecciones
     public Vector3 GetVectorFromAngle(float angle)
     {

@@ -24,6 +24,9 @@ public class WeaponRadar : Weapon
 
     public override void PowerElement()
     {
+
+        if (CurrentState != WeaponState.InInventory) return;
+        
         if (!_canRadar || _eagleVision == null) return;
 
         // Activar EagleVision en lugar del efecto de esfera
@@ -52,6 +55,11 @@ public class WeaponRadar : Weapon
         yield return new WaitForSeconds(3);
         _canRadar = true;
         _player.CanWeaponChange = true;
+    }
+
+    public override void ResetWeaponState()
+    {
+        base.ResetWeaponState();
     }
 
 }
