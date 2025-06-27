@@ -18,21 +18,31 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         pausePanel.SetActive(true);
-        Time.timeScale = 0f; // Detiene el juego
+        Time.timeScale = 0f;
         isPaused = true;
+
+        // Mostrar cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void Resume()
     {
         pausePanel.SetActive(false);
-        Time.timeScale = 1f; // Reanuda el juego
+        Time.timeScale = 1f;
         isPaused = false;
+
+        // Ocultar cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void GoToMainMenu()
     {
-        Time.timeScale = 1f; // Asegura que el juego siga al volver
-        SceneManager.LoadScene(0); // Asume que el menú principal es la escena 0
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
