@@ -149,11 +149,10 @@ public class Scavanger : MonoBehaviour, IDamagiable
     // Nuevo método para crear el módulo en el suelo
     private void DropModuleOnFloor(GameObject module)
     {
-        // Posicionar ligeramente alejado del jugador
         Vector3 dropPosition = _playerScript.transform.position +
-                              new Vector3(UnityEngine.Random.Range(-1f, 1f),
-                                          0.5f,
-                                          UnityEngine.Random.Range(-1f, 1f));
+                          new Vector3(UnityEngine.Random.Range(-1f, 1f),
+                                      0.5f,
+                                      UnityEngine.Random.Range(-1f, 1f));
 
         GameObject droppedModule = Instantiate(_modulePrefab, dropPosition, Quaternion.identity);
 
@@ -161,6 +160,13 @@ public class Scavanger : MonoBehaviour, IDamagiable
         if (pickup != null)
         {
             pickup.SetModule(module);
+        }
+
+        // Forzar desactivación del módulo robado
+        Weapon weapon = module.GetComponent<Weapon>();
+        if (weapon != null)
+        {
+            weapon.ForceDisable();
         }
     }
     private void Idle()

@@ -15,6 +15,7 @@ public class WeaponPulse : Weapon
 
     public override void PowerElement()
     {
+        
         base.PowerElement();
         _player.CanWeaponChange = true;
         if (!_isReadyToShootAgain) return;

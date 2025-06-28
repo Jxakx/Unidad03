@@ -47,7 +47,20 @@ public class Weapon : MonoBehaviour, IModules
     }
     public virtual void ResetWeaponState()
     {
-        // Método para limpiar estado cuando se roba el arma
-        if (MyBodyFBX != null) MyBodyFBX.SetActive(false);
+        if (MyBodyFBX != null)
+        {
+            MyBodyFBX.SetActive(false);
+        }
+        gameObject.SetActive(false);
+        CurrentState = WeaponState.Dropped;
     }
+    public void ForceDisable()
+    {
+        gameObject.SetActive(false);
+        if (MyBodyFBX != null)
+        {
+            MyBodyFBX.SetActive(false);
+        }
+    }
+
 }

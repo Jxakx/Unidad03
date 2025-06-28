@@ -272,9 +272,6 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     public void AddDroppedModule(GameObject module)
     {
-        float distance = Vector3.Distance(transform.position, module.transform.position);
-        if (distance < 2f) return; // No recoger si está muy cerca
-
         if (module != null && !_inventory.ContainsModule(module))
         {
             Weapon weapon = module.GetComponent<Weapon>();
@@ -293,6 +290,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
                 rb.isKinematic = true;
                 rb.useGravity = false;
             }
+
+            // Actualizar selección
+            _inventory.UpdateWeaponSelection();
         }
     }
     // Método para soltar un módulo aleatorio
@@ -303,18 +303,17 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         int randomIndex = UnityEngine.Random.Range(1, _inventory.MyItemsCount());
         GameObject module = _inventory.GetModuleAtIndex(randomIndex);
 
-        Weapon weapon = module.GetComponent<Weapon>();
-        if (weapon != null)
-        {
-            weapon.SetDroppedState();
-        }
+        // Guardar si era el seleccionado antes de remover
+        bool wasSelected = (_inventory.WeaponSelected == randomIndex);
 
+        // Remover el módulo
         _inventory.RemoveWeapon(module);
-        module.SetActive(false);
 
-        if (_inventory.WeaponSelected == randomIndex)
+        // Si era el seleccionado, forzar cambio al módulo base
+        if (wasSelected)
         {
-            SelectModule(0);
+            _inventory.SelectWeapon(0);
+            _weaponSelected = _inventory.GetModuleAtIndex(0);
         }
 
         return module;

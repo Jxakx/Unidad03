@@ -7,6 +7,7 @@ public class ModulePickup : MonoBehaviour
     private GameObject _moduleReference;
     [SerializeField] private float _rotationSpeed = 50f;
 
+
     private void Start()
     {
         // Configurar collider de tamaño fijo

@@ -57,24 +57,64 @@ public class Inventory
         int index = _inventory.IndexOf(weapon);
         if (index != -1)
         {
-            // Limpiar estado visual antes de remover
+            // Limpiar estado visual
             Weapon weaponComp = weapon.GetComponent<Weapon>();
             if (weaponComp != null)
             {
-                // Restaurar visuales del jugador
-                if (weaponComp is WeaponInvisible invisibleWeapon)
-                {
-                    invisibleWeapon.RecoveryMaterial();
-                }
-                weaponComp.MyBodyFBX.SetActive(false);
+                weaponComp.ResetWeaponState();
             }
+
+            // Guardar si era el arma seleccionada
+            bool wasSelected = (_weaponSelected == index);
 
             _inventory.RemoveAt(index);
 
-            if (_weaponSelected == index)
+            // Actualizar selección
+            if (wasSelected)
             {
-                _weaponSelected = Mathf.Clamp(_weaponSelected - 1, 0, _inventory.Count - 1);
+                // Si era la seleccionada, cambiar a la primera arma
+                _weaponSelected = 0;
                 SelectWeapon(_weaponSelected);
+            }
+            else if (_weaponSelected > index)
+            {
+                // Ajustar índice si estaba después de la removida
+                _weaponSelected--;
+            }
+
+            // Forzar actualización de selección
+            UpdateWeaponSelection();
+        }
+    }
+
+    // Nuevo método para actualizar la selección
+    public void UpdateWeaponSelection()
+    {
+        // Verificar que la selección actual sea válida
+        if (_weaponSelected >= _inventory.Count)
+        {
+            _weaponSelected = _inventory.Count - 1;
+        }
+
+        // Reactivar solo la selección actual
+        for (int i = 0; i < _inventory.Count; i++)
+        {
+            GameObject weaponObj = _inventory[i];
+            Weapon weapon = weaponObj.GetComponent<Weapon>();
+
+            if (weapon != null)
+            {
+                bool isActive = (i == _weaponSelected);
+                weaponObj.SetActive(isActive);
+
+                if (isActive)
+                {
+                    weapon.MyBodyFBX.SetActive(true);
+                }
+                else
+                {
+                    weapon.MyBodyFBX.SetActive(false);
+                }
             }
         }
     }

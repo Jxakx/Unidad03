@@ -15,7 +15,7 @@ public class WeaponInvisible : Weapon
 
     public override void PowerElement()
     {
-        if (CurrentState != WeaponState.InInventory) return;
+        
         if (_player.IsInvisible) return;
 
         _player.IsInvisible = true;
