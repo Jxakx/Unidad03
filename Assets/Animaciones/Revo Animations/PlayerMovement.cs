@@ -312,8 +312,12 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         // Si era el seleccionado, forzar cambio al módulo base
         if (wasSelected)
         {
-            _inventory.SelectWeapon(0);
+            // Cambiar al módulo base (índice 0)
+            SelectModule(0);
+
+            // Actualizar referencia y animador
             _weaponSelected = _inventory.GetModuleAtIndex(0);
+            _animatorBasic.animator = _inventory.MyCurrentAnimator();
         }
 
         return module;

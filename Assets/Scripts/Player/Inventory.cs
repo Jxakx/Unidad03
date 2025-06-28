@@ -69,21 +69,16 @@ public class Inventory
 
             _inventory.RemoveAt(index);
 
-            // Actualizar selección
+            // Actualizar selección solo si era el arma seleccionada
             if (wasSelected)
             {
-                // Si era la seleccionada, cambiar a la primera arma
-                _weaponSelected = 0;
-                SelectWeapon(_weaponSelected);
+                _weaponSelected = 0;  // Cambiar al módulo base
             }
             else if (_weaponSelected > index)
             {
                 // Ajustar índice si estaba después de la removida
                 _weaponSelected--;
             }
-
-            // Forzar actualización de selección
-            UpdateWeaponSelection();
         }
     }
 
@@ -121,17 +116,32 @@ public class Inventory
 
     public GameObject SelectWeapon(int index)
     {
-        if (_weaponSelected != 0) 
+        // Validar índice
+        if (index < 0 || index >= _inventory.Count)
         {
-            _inventory[_weaponSelected].SetActive(false); //Oculto arma anterior
+            index = 0;  // Forzar selección del módulo base si no es válido
         }
 
-        _inventory[_weaponSelected].GetComponent<Weapon>().MyBodyFBX.SetActive(false); //Oculto el cuerpo anterior
-        
+        // Desactivar arma actual
+        if (_inventory[_weaponSelected] != null)
+        {
+            _inventory[_weaponSelected].SetActive(false);
+            Weapon currentWeapon = _inventory[_weaponSelected].GetComponent<Weapon>();
+            if (currentWeapon != null) currentWeapon.MyBodyFBX.SetActive(false);
+        }
+
+        // Actualizar índice y activar nueva arma
         _weaponSelected = index;
-        _inventory[_weaponSelected].SetActive(true); //Muestro arma nueva
-        _inventory[_weaponSelected].GetComponent<Weapon>().MyBodyFBX.SetActive(true); //Oculto el cuerpo anterior
-        return _inventory[_weaponSelected];
+        GameObject selectedWeapon = _inventory[_weaponSelected];
+        selectedWeapon.SetActive(true);
+
+        Weapon weaponComp = selectedWeapon.GetComponent<Weapon>();
+        if (weaponComp != null)
+        {
+            weaponComp.MyBodyFBX.SetActive(true);
+        }
+
+        return selectedWeapon;
     }
 
     //método para obtener un módulo por índice
