@@ -30,6 +30,10 @@ public class Weapon : MonoBehaviour, IModules
 
     }
 
+    public virtual void MyStart()
+    {
+    }
+
     public void SetDroppedState()
     {
         CurrentState = WeaponState.Dropped;
