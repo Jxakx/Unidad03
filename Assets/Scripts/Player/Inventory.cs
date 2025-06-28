@@ -57,28 +57,29 @@ public class Inventory
         int index = _inventory.IndexOf(weapon);
         if (index != -1)
         {
-            // Limpiar estado visual
+            // 1. Obtener el componente Weapon
             Weapon weaponComp = weapon.GetComponent<Weapon>();
+
+            // 2. Llamar al método de limpieza específica
             if (weaponComp != null)
             {
-                weaponComp.ResetWeaponState();
+                weaponComp.OnRemovedFromInventory();
             }
 
-            // Guardar si era el arma seleccionada
+            // 3. Resto de la lógica (estado visual, selección, etc.)
             bool wasSelected = (_weaponSelected == index);
-
             _inventory.RemoveAt(index);
 
-            // Actualizar selección solo si era el arma seleccionada
             if (wasSelected)
             {
-                _weaponSelected = 0;  // Cambiar al módulo base
+                _weaponSelected = 0;
             }
             else if (_weaponSelected > index)
             {
-                // Ajustar índice si estaba después de la removida
                 _weaponSelected--;
             }
+
+           
         }
     }
 

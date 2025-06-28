@@ -63,4 +63,17 @@ public class Weapon : MonoBehaviour, IModules
         }
     }
 
+    public virtual void OnRemovedFromInventory()
+    {
+        // Limpieza básica que aplica a TODAS las armas
+        if (MyBodyFBX != null)
+        {
+            MyBodyFBX.SetActive(false);
+        }
+        gameObject.SetActive(false);
+
+        // Restablecer estado si es necesario
+        CurrentState = WeaponState.Dropped;
+    }
+
 }
