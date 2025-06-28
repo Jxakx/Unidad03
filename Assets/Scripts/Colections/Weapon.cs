@@ -20,5 +20,8 @@ public class Weapon : MonoBehaviour, IModules
     public virtual void PowerElement()
     {
     }
-    
+
+    public virtual void MyStart()
+    {
+    }
 }

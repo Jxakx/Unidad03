@@ -260,6 +260,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     {
         if (index > _inventory.MyItemsCount() - 1) return;
         _weaponSelected = _inventory.SelectWeapon(index);
+        _weaponSelected.GetComponent<Weapon>().MyStart();
         _animatorBasic.animator = _inventory.MyCurrentAnimator();
     }
 

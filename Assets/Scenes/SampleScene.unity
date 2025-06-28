@@ -4074,6 +4074,8 @@ MonoBehaviour:
   _myAnimator: {fileID: 612311092}
   _myBulletPrebaf: {fileID: 808914995402276192, guid: f1a081eddbfc3864798dd00d9c3c57c2, type: 3}
   _instancePoint: {fileID: 2074803358}
+  _timeToShoot: 0.5
+  _isReadyToShootAgain: 1
 --- !u!114 &111841759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81832,8 +81834,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06141783, y: -0.70433456, z: 0.06140029, w: 0.7045358}
-  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
+  m_LocalRotation: {x: 0.06141716, y: -0.7043347, z: 0.06139962, w: 0.7045359}
+  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
