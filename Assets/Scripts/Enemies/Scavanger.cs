@@ -47,6 +47,10 @@ public class Scavanger : MonoBehaviour, IDamagiable
     [SerializeField] private float _dropChance = 0.4f; // 40% de probabilidad
     [SerializeField] private GameObject _modulePrefab; // Prefab para el módulo en el suelo
 
+    [Header("Efectos de Impacto")]
+    [SerializeField] private ParticleSystem _hitParticles; // Sistema de partículas
+    [SerializeField] private Transform _hitParticlePoint; // Punto donde aparecerán las partículas
+
     private void Start()
     {
         _currentHealth = _maxHealth;
@@ -270,6 +274,21 @@ public class Scavanger : MonoBehaviour, IDamagiable
     {
         _currentHealth -= damage;
         _audioSource.PlayOneShot(_soundDamage);
+
+        // Activar partículas de impacto
+        if (_hitParticles != null)
+        {
+            // Instanciar partículas en el punto de impacto
+            ParticleSystem particles = Instantiate(
+                _hitParticles,
+                _hitParticlePoint.position,
+                Quaternion.identity
+            );
+
+            // Reproducir y destruir después de completar
+            particles.Play();
+            Destroy(particles.gameObject, particles.main.duration);
+        }
 
         if (_currentHealth <= 0)
         {
