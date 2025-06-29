@@ -51,6 +51,10 @@ public class Scavanger : MonoBehaviour, IDamagiable
     [SerializeField] private ParticleSystem _hitParticles; // Sistema de partículas
     [SerializeField] private Transform _hitParticlePoint; // Punto donde aparecerán las partículas
 
+    [Header("Stun")]
+    [SerializeField] private float _stunDuration = 1.5f;
+    private bool _isStunned = false;
+
     private void Start()
     {
         _currentHealth = _maxHealth;
@@ -61,6 +65,10 @@ public class Scavanger : MonoBehaviour, IDamagiable
 
     private void Update()
     {
+        // Si estoy stunneado, no ejecuto ninguna otra lógica
+        if (_isStunned)
+            return;
+
         distBorrar = Vector3.Distance(transform.position, _playerScript.transform.position);
         _currentState();
 
@@ -274,25 +282,45 @@ public class Scavanger : MonoBehaviour, IDamagiable
     {
         _currentHealth -= damage;
         _audioSource.PlayOneShot(_soundDamage);
-
-        // Activar partículas de impacto
-        if (_hitParticles != null)
-        {
-            // Instanciar partículas en el punto de impacto
-            ParticleSystem particles = Instantiate(
-                _hitParticles,
-                _hitParticlePoint.position,
-                Quaternion.identity
-            );
-
-            // Reproducir y destruir después de completar
-            particles.Play();
-            Destroy(particles.gameObject, particles.main.duration);
-        }
+        PlayHitParticles();
 
         if (_currentHealth <= 0)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
+        }
+
+        // Arranca el stun
+        StartCoroutine(StunCoroutine());
+    }
+
+    private IEnumerator StunCoroutine()
+    {
+        _isStunned = true;
+
+        ResetAnimatorParameters();
+        _anim.ResetTrigger("Stun");     // Por si quedó activo de antes
+        _anim.SetTrigger("Stun");       // Dispara la animación de stun
+
+        Debug.Log("¡Stun trigger activado!");
+
+        yield return new WaitForSeconds(_stunDuration);
+
+        _isStunned = false;
+
+        // Retoma el estado por defecto (puede ser Walking, Idle, etc.)
+        ResetAnimatorParameters();
+        _anim.SetBool("isWalking", true);
+        _currentState = WalkingArround;
+    }
+
+    private void PlayHitParticles()
+    {
+        if (_hitParticles != null)
+        {
+            var ps = Instantiate(_hitParticles, _hitParticlePoint.position, Quaternion.identity);
+            ps.Play();
+            Destroy(ps.gameObject, ps.main.duration);
         }
     }
 

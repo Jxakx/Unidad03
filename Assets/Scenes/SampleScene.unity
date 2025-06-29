@@ -4389,7 +4389,7 @@ MonoBehaviour:
   CurrentState: 0
   _myBulletPrebaf: {fileID: 808914995402276192, guid: f1a081eddbfc3864798dd00d9c3c57c2, type: 3}
   _instancePoint: {fileID: 2074803358}
-  _timeToShoot: 1
+  _timeToShoot: 2
   _isReadyToShootAgain: 1
 --- !u!114 &111841759
 MonoBehaviour:
@@ -84026,7 +84026,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061417826, y: -0.70433456, z: 0.061400287, w: 0.7045358}
+  m_LocalRotation: {x: 0.061417356, y: -0.7043346, z: 0.06139981, w: 0.70453584}
   m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
