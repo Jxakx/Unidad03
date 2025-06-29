@@ -31,7 +31,7 @@ public class ChargingStation : MonoBehaviour
                 chargingPromptPanel.SetActive(true);
 
             if (chargingPromptText != null)
-                chargingPromptText.text = "Parece una fuente de energía.";
+                chargingPromptText.text = "Parece una fuente de energia.";
         }
     }
 
