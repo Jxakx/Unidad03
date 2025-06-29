@@ -22,7 +22,7 @@ public class ChargingStation : MonoBehaviour
                     chargingPromptPanel.SetActive(true);
 
                 if (chargingPromptText != null)
-                    chargingPromptText.text = "Cargando batería...";
+                    chargingPromptText.text = "Cargando bateria...";
             }
         }
         else if (other.CompareTag("Player"))
