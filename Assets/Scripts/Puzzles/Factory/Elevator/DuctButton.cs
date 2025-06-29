@@ -54,7 +54,6 @@ public class DuctButton : MonoBehaviour
             if (interactionPanel != null)
             {
                 interactionPanel.SetActive(true);
-                interactionText.text = "Presiona E para interactuar";
             }
         }
     }
