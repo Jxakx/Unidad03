@@ -3,40 +3,69 @@ using System.Collections;
 
 public class Show3DOnToggle : MonoBehaviour
 {
-    [Header("Referencia al Objeto 3D (en Canvas)")]
-    [Tooltip("Arrastra aquí tu GameObject 3D que está en el canvas")]
-    public GameObject ui3DObject;
+    [Header("Referencias a Objetos 3D (en Canvas)")]
+    [Tooltip("Arrastra aquí tus GameObjects 3D que están en el canvas")]
+    public GameObject[] ui3DObjects;
 
-    // Guardamos posición y rotación local originales:
-    private Vector3 originalLocalPos;
-    private Quaternion originalLocalRot;
+    // Arrays para guardar posiciones y rotaciones locales originales
+    private Vector3[] originalLocalPos;
+    private Quaternion[] originalLocalRot;
 
     void Awake()
     {
-        if (ui3DObject != null)
+        if (ui3DObjects != null && ui3DObjects.Length > 0)
         {
-            // Al inicio guardamos su estado “inactivo” y posicionamiento
-            originalLocalPos = ui3DObject.transform.localPosition;
-            originalLocalRot = ui3DObject.transform.localRotation;
-            ui3DObject.SetActive(false);
+            int count = ui3DObjects.Length;
+            originalLocalPos = new Vector3[count];
+            originalLocalRot = new Quaternion[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                var obj = ui3DObjects[i];
+                if (obj != null)
+                {
+                    // Guardar estado local
+                    originalLocalPos[i] = obj.transform.localPosition;
+                    originalLocalRot[i] = obj.transform.localRotation;
+                    // Desactivar al inicio
+                    obj.SetActive(false);
+                }
+            }
         }
     }
 
     void OnEnable()
     {
-        // Cuando ESTE GameObject se activa, activamos el 3D y lanzamos la animación
-        if (ui3DObject != null)
+        // Activar todos los objetos y, si quieres, iniciar animación aquí
+        if (ui3DObjects != null)
         {
-            ui3DObject.SetActive(true);
+            for (int i = 0; i < ui3DObjects.Length; i++)
+            {
+                var obj = ui3DObjects[i];
+                if (obj != null)
+                {
+                    obj.SetActive(true);
+                    // Si deseas reiniciar posición/rotación, descomenta:
+                    // obj.transform.localPosition = originalLocalPos[i];
+                    // obj.transform.localRotation = originalLocalRot[i];
+                }
+            }
         }
     }
 
     void OnDisable()
     {
-        // Cuando ESTE GameObject se desactiva, escondemos el 3D
-        if (ui3DObject != null)
+        // Desactivar todos los objetos
+        if (ui3DObjects != null)
         {
-            ui3DObject.SetActive(false);
+            for (int i = 0; i < ui3DObjects.Length; i++)
+            {
+                var obj = ui3DObjects[i];
+                if (obj != null)
+                {
+                    obj.SetActive(false);
+                }
+            }
         }
     }
 }
