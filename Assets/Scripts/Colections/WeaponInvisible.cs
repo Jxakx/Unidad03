@@ -15,10 +15,11 @@ public class WeaponInvisible : Weapon
 
     public override void PowerElement()
     {
+        
         if (_player.IsInvisible) return;
+
         _player.IsInvisible = true;
         StartCoroutine(InvisibleTime());
-        
     }
 
     public IEnumerator InvisibleTime()
@@ -41,5 +42,11 @@ public class WeaponInvisible : Weapon
         MyBodyFBX.SetActive(false);
         _myBodyInvisible.SetActive(true);
         _player._animatorBasic.animator = _myAnimatorInvisible;
+    }
+
+    public override void ResetWeaponState()
+    {
+        base.ResetWeaponState();
+        if (_myBodyInvisible != null) _myBodyInvisible.SetActive(false);
     }
 }

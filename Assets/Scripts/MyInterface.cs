@@ -10,7 +10,6 @@ public interface IModules
 {
     public void Initialized(PlayerMovement player);
     public void PowerElement();
-    public void MyStart();
 }
 
 public interface IPuzzlesElements
