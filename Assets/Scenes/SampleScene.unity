@@ -10151,7 +10151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &357927782
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14972,7 +14972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &496988630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39101,6 +39101,7 @@ GameObject:
   - component: {fileID: 1004845483}
   - component: {fileID: 1004845482}
   - component: {fileID: 1004845481}
+  - component: {fileID: 1004845484}
   m_Layer: 0
   m_Name: OJO
   m_TagString: Untagged
@@ -39118,7 +39119,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.106718265, y: -0.52565986, z: -0.84095997, w: 0.07126934}
   m_LocalPosition: {x: -10.301289, y: -277.20108, z: 69.797226}
-  m_LocalScale: {x: 88.93208, y: 88.93208, z: 88.93208}
+  m_LocalScale: {x: 88.93208, y: 6.5189886, z: 88.93208}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2123310335}
@@ -39164,7 +39165,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e027d6efbc0765f419d47e9e4681e053, type: 2}
+  - {fileID: 2126962163}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -39193,7 +39194,29 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004845479}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1004845484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004845479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26cd68f95cc412b4a8ac4420e5440cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  irisMaterial: {fileID: 2126962163}
+  baseOffset: {x: 0.5, y: 0.5}
+  jitterRange: 0.15
+  minMoveTime: 0.2
+  maxMoveTime: 0.2
+  blinkCloseTime: 0.5
+  blinkOpenTime: 0.2
+  blinkInterval: {x: 1, y: 1}
+  openRadius: 0.2
+  closedRadius: 0.01
 --- !u!4 &1010626076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: faa60e9d6699f5c41b364eca43f0c4e5, type: 3}
@@ -73366,6 +73389,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124041106}
   m_Mesh: {fileID: 6069377354581523429, guid: ed8ff7f56f4c99f49bb5fb7b99bef1b2, type: 3}
+--- !u!21 &2126962163
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ProyectorEye MAT (Instance)
+  m_Shader: {fileID: -6465566751694194690, guid: 0c360382a8665ed4a9060873c232e70d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_8ea604f125de46308904fd6b929c5d12_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: f214dc048049f564783db2023a61679e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ControlEfectoFBX: 1
+    - _Float: 0.11
+    - _IrisRadius: 0.2
+    - _Posiciaioan: -0.25
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _VelocidadHolograma: 0.1
+    m_Colors:
+    - _BaseColor: {r: 0.6084906, g: 1, b: 1, a: 0}
+    - _FresnelColor: {r: 0, g: 0.6232794, b: 1.5265938, a: 0}
+    - _HologramaTiling: {r: 1, g: 3, b: 0, a: 0}
+    - _IrisColor: {r: 0, g: 0.9894493, b: 1, a: 0}
+    - _IrisOffset: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _PosicionOjo: {r: -2.33, g: -0.16, b: 0, a: 0}
+    - _Tama_oOjo: {r: 7.37, g: 0.37, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &2130218208
 GameObject:
   m_ObjectHideFlags: 0
@@ -82066,7 +82146,7 @@ Transform:
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
   m_LocalRotation: {x: 0.06141783, y: -0.70433456, z: 0.06140029, w: 0.7045358}
-  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
+  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
