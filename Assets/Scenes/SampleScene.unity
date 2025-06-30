@@ -39117,13 +39117,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1004845479}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.106718265, y: -0.52565986, z: -0.84095997, w: 0.07126934}
-  m_LocalPosition: {x: -10.301289, y: -277.20108, z: 69.797226}
+  m_LocalRotation: {x: 0.09892278, y: -0.6083222, z: -0.78325105, w: 0.08170781}
+  m_LocalPosition: {x: -15.298364, y: -277.19977, z: 69.802414}
   m_LocalScale: {x: 88.93208, y: 6.5189886, z: 88.93208}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2123310335}
-  m_LocalEulerAnglesHint: {x: -60.332, y: -30.931, z: -152.041}
+  m_LocalEulerAnglesHint: {x: -69.516, y: -46.628, z: -134.79}
 --- !u!135 &1004845481
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -73438,10 +73438,10 @@ Material:
     - _QueueOffset: 0
     - _VelocidadHolograma: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.6084906, g: 1, b: 1, a: 0}
+    - _BaseColor: {r: 0.8605356, g: 1.4142135, b: 1.4142135, a: 0}
     - _FresnelColor: {r: 0, g: 0.6232794, b: 1.5265938, a: 0}
     - _HologramaTiling: {r: 1, g: 3, b: 0, a: 0}
-    - _IrisColor: {r: 0, g: 0.9894493, b: 1, a: 0}
+    - _IrisColor: {r: 0, g: 2.7951505, b: 2.828427, a: 0}
     - _IrisOffset: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _PosicionOjo: {r: -2.33, g: -0.16, b: 0, a: 0}
     - _Tama_oOjo: {r: 7.37, g: 0.37, b: 0, a: 0}
@@ -82146,7 +82146,7 @@ Transform:
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
   m_LocalRotation: {x: 0.06141783, y: -0.70433456, z: 0.06140029, w: 0.7045358}
-  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
+  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
