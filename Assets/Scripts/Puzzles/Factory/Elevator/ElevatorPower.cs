@@ -130,9 +130,6 @@ public class ElevatorPower : MonoBehaviour
             {
                 if (elevatorPromptPanel != null)
                     elevatorPromptPanel.SetActive(true);
-
-                if (elevatorPromptText != null)
-                    elevatorPromptText.text = "Le falta energía al elevador.";
             }
 
             if (_batteryBox != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)

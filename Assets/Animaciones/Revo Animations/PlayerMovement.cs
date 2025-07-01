@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,12 +58,23 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [SerializeField] private bool _isInvisible = false;
 
     [SerializeField] private EagleVision _eagleVision;
+
+    [Header("Damage Feedback")]
+    [SerializeField] private Light _damageLight;
+    [SerializeField] private Material _damageMaterial1; // Primer material
+    [SerializeField] private Material _damageMaterial2; // Segundo material (nuevo)
+    private Color _originalLightColor;
+    private Color _originalMaterialColor1;
+    private Color _originalMaterialColor2;
+    private bool _colorsSaved = false; // Para asegurar que guardamos los colores solo una vez
+
+
     public bool IsInvisible
     {
         get { return _isInvisible; }
         set { _isInvisible = value; }
     }
-
+    [Header("BodyRenderer")]
     public List<MeshRenderer> bodyRender;
     [SerializeField] private Transform _projectorPosition;
     [SerializeField] private Transform _module1;
@@ -94,6 +106,13 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         // Asegurar que existe el componente
         if (_eagleVision == null)
             _eagleVision = gameObject.AddComponent<EagleVision>();
+
+        // Guardar colores originales
+        SaveOriginalColors();
+
+        // Guardar colores originales si las referencias están asignadas
+        if (_damageLight != null)
+            _originalLightColor = _damageLight.color;
     }
 
     void Update()
@@ -458,9 +477,77 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
     }
 
+    private void SaveOriginalColors() // Guarda los colores que se colocaron desde un principio en el MAT de UI (asi no se quedan siempre en rojo)
+    {
+        if (_colorsSaved) return;
+
+        if (_damageLight != null)
+            _originalLightColor = _damageLight.color;
+
+        if (_damageMaterial1 != null)
+            _originalMaterialColor1 = _damageMaterial1.GetColor("_BaseColor");
+
+        if (_damageMaterial2 != null)
+            _originalMaterialColor2 = _damageMaterial2.GetColor("_BaseColor");
+
+        _colorsSaved = true;
+    }
+
+
+    private IEnumerator DamageEffect()
+    {
+        // Asegurarnos de tener los colores originales
+        SaveOriginalColors();
+
+        // Cambiar a rojo
+        if (_damageLight != null)
+            _damageLight.color = Color.red;
+
+        if (_damageMaterial1 != null)
+            _damageMaterial1.SetColor("_BaseColor", Color.red);
+
+        if (_damageMaterial2 != null)
+            _damageMaterial2.SetColor("_BaseColor", Color.red);
+
+        // Esperar 1 segundo
+        yield return new WaitForSeconds(1f);
+
+        // Restaurar colores originales
+        RestoreOriginalColors();
+    }
+
+    private void RestoreOriginalColors()
+    {
+        if (_damageLight != null)
+            _damageLight.color = _originalLightColor;
+
+        if (_damageMaterial1 != null)
+            _damageMaterial1.SetColor("_BaseColor", _originalMaterialColor1);
+
+        if (_damageMaterial2 != null)
+            _damageMaterial2.SetColor("_BaseColor", _originalMaterialColor2);
+    }
+
+
+
+    private void OnDisable()
+    {
+        // Restaurar colores cuando el objeto se desactiva
+        RestoreOriginalColors();
+    }
+
+    private void OnDestroy()
+    {
+        // Restaurar colores cuando el objeto se destruye
+        RestoreOriginalColors();
+    }
     public void Damage(float damage)
     {
         _currentHealth -= damage;
+
+        // Activar el efecto visual
+        StartCoroutine(DamageEffect());
+
         if (_currentHealth <= 0f)
         {
             // Morir

@@ -21,21 +21,21 @@ public class Nota1Interactuable : MonoBehaviour
 
     void Update()
     {
+        // Al presionar E dentro del rango, alterna la visibilidad del panel
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            lorePanelUI.SetActive(true);
-            loreText.text = diaryEntry;
-            interactTextUI.SetActive(false); 
-        }
-
-        if (lorePanelUI.activeSelf && Input.GetKeyDown(KeyCode.Escape))
-        {
-            lorePanelUI.SetActive(false);
-
-            // Mostrar nuevamente el cartel si aún estás en rango
-            if (isPlayerInRange)
+            if (lorePanelUI.activeSelf)
             {
+                // Si ya está visible, lo cierra y muestra el texto de interactuar
+                lorePanelUI.SetActive(false);
                 interactTextUI.SetActive(true);
+            }
+            else
+            {
+                // Si está cerrado, lo abre y oculta el texto de interactuar
+                lorePanelUI.SetActive(true);
+                loreText.text = diaryEntry;
+                interactTextUI.SetActive(false);
             }
         }
     }
