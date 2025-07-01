@@ -8,18 +8,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: UAV-OSD-Sans-Mono SDF Sin Shader Material
-  m_Shader: {fileID: -6465566751694194690, guid: 43e48d99c63f93d488b53bd167f82de3, type: 3}
-  m_Parent: {fileID: 2100000, guid: 5520bb0544225344aa55750048632329, type: 2}
-  m_ModifiedSerializedProperties: 18
+  m_Shader: {fileID: -6465566751694194690, guid: a56e90f2944309441b35a1bfdee164c8, type: 3}
+  m_Parent: {fileID: 2100000, guid: c49b7a600fb89ce4b916947b6940b696, type: 2}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _EMISSION
   - _SURFACE_TYPE_TRANSPARENT
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -28,17 +28,8 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
-    - _DstBlend: 10
-    - _DstBlendAlpha: 10
     - _EmissionPower: 4
-    - _Surface: 1
-    - _WorkflowMode: 1
-    - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.87186885, g: 1, b: 0, a: 1}
-    - _Color: {r: 0.87186885, g: 1, b: 0, a: 1}
-    - _EmissionColor: {r: 5.278032, g: 5.278032, b: 5.278032, a: 1}
     - _EmissionDiariox: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &11400000
@@ -51,11 +42,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: UAV-OSD-Sans-Mono SDF Sin Shader
+  m_Name: UAV-OSD-Sans-Mono SDF MENU
   m_EditorClassIdentifier: 
-  hashCode: -936765545
+  hashCode: 1561858681
   material: {fileID: -6335816266305226022}
-  materialHashCode: 44337623
+  materialHashCode: -1821759431
   m_Version: 1.1.0
   m_SourceFontFileGUID: 8efa2d95c3636214cb84e827a4338743
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 8efa2d95c3636214cb84e827a4338743, type: 3}
