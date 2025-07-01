@@ -53,7 +53,7 @@ public class BridgeSpawner : MonoBehaviour
             if (!isSpawning && interactPanel != null)
             {
                 interactPanel.SetActive(true);
-                interactText.text = "Presione E para interactuar";
+                
             }
         }
     }
