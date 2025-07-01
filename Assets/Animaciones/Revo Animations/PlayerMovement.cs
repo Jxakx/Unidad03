@@ -230,7 +230,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _elementLevitated = null;
     }
 
-    private void AddModules(Transform _position)
+    public void AddModules(Transform _position)
     {
         var myDriver = _elementDetected.GetComponent<IModules>();
         if (myDriver == null) return;
@@ -264,6 +264,64 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _animatorBasic.animator = _inventory.MyCurrentAnimator();
     }
 
+    // método para verificar si tiene módulos
+    public bool HasModules()
+    {
+        return _inventory.MyItemsCount() > 1; // 1 es el módulo base
+    }
+
+    public void AddDroppedModule(GameObject module)
+    {
+        if (module != null && !_inventory.ContainsModule(module))
+        {
+            Weapon weapon = module.GetComponent<Weapon>();
+            if (weapon != null)
+            {
+                weapon.SetInventoryState();
+            }
+
+            module.SetActive(true);
+            _inventory.ReAddModule(module);
+
+            module.transform.parent = transform;
+            Rigidbody rb = module.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+
+            // Actualizar selección
+            _inventory.UpdateWeaponSelection();
+        }
+    }
+    // Método para soltar un módulo aleatorio
+    public GameObject DropRandomModule()
+    {
+        if (_inventory.MyItemsCount() <= 1) return null;
+
+        int randomIndex = UnityEngine.Random.Range(1, _inventory.MyItemsCount());
+        GameObject module = _inventory.GetModuleAtIndex(randomIndex);
+
+        // Guardar si era el seleccionado antes de remover
+        bool wasSelected = (_inventory.WeaponSelected == randomIndex);
+
+        // Remover el módulo
+        _inventory.RemoveWeapon(module);
+
+        // Si era el seleccionado, forzar cambio al módulo base
+        if (wasSelected)
+        {
+            // Cambiar al módulo base (índice 0)
+            SelectModule(0);
+
+            // Actualizar referencia y animador
+            _weaponSelected = _inventory.GetModuleAtIndex(0);
+            _animatorBasic.animator = _inventory.MyCurrentAnimator();
+        }
+
+        return module;
+    }
     #region Detecciones
     public Vector3 GetVectorFromAngle(float angle)
     {

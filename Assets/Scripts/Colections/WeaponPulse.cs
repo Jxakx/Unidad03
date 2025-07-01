@@ -15,6 +15,7 @@ public class WeaponPulse : Weapon
 
     public override void PowerElement()
     {
+        
         base.PowerElement();
         _player.CanWeaponChange = true;
         if (!_isReadyToShootAgain) return;
@@ -32,5 +33,9 @@ public class WeaponPulse : Weapon
     public override void MyStart()
     {
         _isReadyToShootAgain = true;
+    }
+    public override void ResetWeaponState()
+    {
+        base.ResetWeaponState();
     }
 }
