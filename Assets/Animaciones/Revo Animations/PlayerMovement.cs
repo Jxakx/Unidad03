@@ -113,9 +113,6 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         // Guardar colores originales si las referencias están asignadas
         if (_damageLight != null)
             _originalLightColor = _damageLight.color;
-
-        if (_damageMaterial != null)
-            _originalMaterialColor = _damageMaterial.GetColor("_BaseColor");
     }
 
     void Update()
@@ -480,7 +477,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
     }
 
-    private void SaveOriginalColors()
+    private void SaveOriginalColors() // Guarda los colores que se colocaron desde un principio en el MAT de UI (asi no se quedan siempre en rojo)
     {
         if (_colorsSaved) return;
 
@@ -495,6 +492,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
         _colorsSaved = true;
     }
+
 
     private IEnumerator DamageEffect()
     {
@@ -529,6 +527,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         if (_damageMaterial2 != null)
             _damageMaterial2.SetColor("_BaseColor", _originalMaterialColor2);
     }
+
+
 
     private void OnDisable()
     {
