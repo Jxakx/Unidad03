@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,12 +58,20 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [SerializeField] private bool _isInvisible = false;
 
     [SerializeField] private EagleVision _eagleVision;
+
+    [Header("Damage Feedback")]
+    [SerializeField] private Light _damageLight; // Luz que cambiará a rojo
+    [SerializeField] private Material _damageMaterial; // Material que cambiará a rojo
+    private Color _originalMaterialColor; // Guardar color original
+    private Color _originalLightColor; // Guardar color original
+
+
     public bool IsInvisible
     {
         get { return _isInvisible; }
         set { _isInvisible = value; }
     }
-
+    [Header("BodyRenderer")]
     public List<MeshRenderer> bodyRender;
     [SerializeField] private Transform _projectorPosition;
     [SerializeField] private Transform _module1;
@@ -94,6 +103,13 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         // Asegurar que existe el componente
         if (_eagleVision == null)
             _eagleVision = gameObject.AddComponent<EagleVision>();
+
+        // Guardar colores originales si las referencias están asignadas
+        if (_damageLight != null)
+            _originalLightColor = _damageLight.color;
+
+        if (_damageMaterial != null)
+            _originalMaterialColor = _damageMaterial.GetColor("_BaseColor");
     }
 
     void Update()
@@ -458,9 +474,33 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
     }
 
+    private IEnumerator DamageEffect()
+    {
+        // Cambiar a rojo
+        if (_damageLight != null)
+            _damageLight.color = Color.red;
+
+        if (_damageMaterial != null)
+            _damageMaterial.SetColor("_BaseColor", Color.red);
+
+        // Esperar 1 segundo
+        yield return new WaitForSeconds(1f);
+
+        // Restaurar colores originales
+        if (_damageLight != null)
+            _damageLight.color = _originalLightColor;
+
+        if (_damageMaterial != null)
+            _damageMaterial.SetColor("_BaseColor", _originalMaterialColor);
+    }
+
     public void Damage(float damage)
     {
         _currentHealth -= damage;
+
+        // Activar el efecto visual
+        StartCoroutine(DamageEffect());
+
         if (_currentHealth <= 0f)
         {
             // Morir
