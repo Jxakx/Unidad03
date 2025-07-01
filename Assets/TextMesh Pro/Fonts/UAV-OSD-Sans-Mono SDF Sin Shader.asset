@@ -31,7 +31,7 @@ Material:
     - _AlphaClip: 1
     - _DstBlend: 10
     - _DstBlendAlpha: 10
-    - _EmissionPower: 2
+    - _EmissionPower: 9
     - _Surface: 1
     - _WorkflowMode: 1
     - _ZWrite: 0
