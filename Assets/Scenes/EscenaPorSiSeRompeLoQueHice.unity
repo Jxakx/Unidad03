@@ -4072,6 +4072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 612311090}
   _myAnimator: {fileID: 612311092}
+  CurrentState: 0
   _myBulletPrebaf: {fileID: 808914995402276192, guid: f1a081eddbfc3864798dd00d9c3c57c2, type: 3}
   _instancePoint: {fileID: 2074803358}
   _timeToShoot: 0.5
@@ -9996,6 +9997,11 @@ MonoBehaviour:
   distBorrar: 0
   _canAttack: 1
   _distAttackDamage: 5
+  _dropChance: 0.4
+  _modulePrefab: {fileID: 0}
+  _hitParticles: {fileID: 0}
+  _hitParticlePoint: {fileID: 0}
+  _stunDuration: 1.5
 --- !u!65 &355241525
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12281,6 +12287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 986810629}
   _myAnimator: {fileID: 986810631}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 1779357452}
   _myAnimatorInvisible: {fileID: 1779357454}
 --- !u!114 &420215920
@@ -13194,6 +13201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &443922402
@@ -27424,7 +27432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &608824776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35961,6 +35969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &912477511
@@ -50286,6 +50295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!1 &1370363712
@@ -50932,6 +50942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &1394965708
@@ -53658,6 +53669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 545437132824832718}
   _myAnimator: {fileID: 6501566558896744974}
+  CurrentState: 0
   _radarRadious: 20
   _targetLayer:
     serializedVersion: 2
@@ -56333,6 +56345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &1580212798
@@ -57142,6 +57155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &1607099786
@@ -62081,6 +62095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &1800720925
@@ -68138,6 +68153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &1993681898
@@ -71070,6 +71086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 0}
   _myAnimator: {fileID: 0}
+  CurrentState: 0
   _myBodyInvisible: {fileID: 0}
   _myAnimatorInvisible: {fileID: 0}
 --- !u!65 &2050172509
@@ -82330,7 +82347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061417356, y: -0.7043346, z: 0.06139981, w: 0.70453584}
+  m_LocalRotation: {x: 0.0614173, y: -0.7043346, z: 0.061399754, w: 0.70453584}
   m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -88849,6 +88866,11 @@ MonoBehaviour:
   distBorrar: 0
   _canAttack: 1
   _distAttackDamage: 5
+  _dropChance: 0.4
+  _modulePrefab: {fileID: 0}
+  _hitParticles: {fileID: 0}
+  _hitParticlePoint: {fileID: 0}
+  _stunDuration: 1.5
 --- !u!4 &5881626010796081987
 Transform:
   m_ObjectHideFlags: 0
@@ -93659,6 +93681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myBodyFBX: {fileID: 3640021630843610787}
   _myAnimator: {fileID: 8009660849988200035}
+  CurrentState: 0
 --- !u!114 &8138839923001304111
 MonoBehaviour:
   m_ObjectHideFlags: 0
