@@ -85043,8 +85043,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061417274, y: -0.7043346, z: 0.061399736, w: 0.70453584}
-  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
+  m_LocalRotation: {x: 0.061417498, y: -0.7043346, z: 0.06139995, w: 0.70453584}
+  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -94261,6 +94261,8 @@ MonoBehaviour:
   IsDashing: 0
   _isInvisible: 0
   _eagleVision: {fileID: 931201985}
+  _damageLight: {fileID: 151228313}
+  _damageMaterial: {fileID: 2100000, guid: e027d6efbc0765f419d47e9e4681e053, type: 2}
   bodyRender: []
   _projectorPosition: {fileID: 8473917384596604533}
   _module1: {fileID: 7846711420864475314}
