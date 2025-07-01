@@ -62,11 +62,11 @@ Material:
     - _QueueOffset: 0
     - _VelocidadHolograma: 0.1
     m_Colors:
-    - _BaseColor: {r: 0.6084906, g: 1, b: 1, a: 0}
+    - _BaseColor: {r: 0, g: 1, b: 1, a: 0}
     - _FresnelColor: {r: 0, g: 0.6232794, b: 1.5265938, a: 0}
     - _HologramaTiling: {r: 1, g: 3, b: 0, a: 0}
-    - _IrisColor: {r: 0, g: 0.9894493, b: 1, a: 0}
-    - _IrisOffset: {r: 0.69, g: 1.23, b: 0, a: 0}
+    - _IrisColor: {r: 0.8349056, g: 0.99805766, b: 1, a: 0}
+    - _IrisOffset: {r: 0.5421056, g: 0.5508947, b: 0, a: 0}
     - _PosicionOjo: {r: -2.33, g: -0.16, b: 0, a: 0}
     - _Tama_oOjo: {r: 7.37, g: 0.37, b: 0, a: 0}
   m_BuildTextureStacks: []

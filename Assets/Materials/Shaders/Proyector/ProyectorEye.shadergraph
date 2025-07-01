@@ -2197,8 +2197,8 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "r": 0.0,
-        "g": 0.9894492626190186,
+        "r": 1.0,
+        "g": 1.0,
         "b": 1.0,
         "a": 0.0
     },
@@ -4113,7 +4113,7 @@
         "m_Id": "49b405e337bf4cbb8c6798e00a257c70"
     },
     "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 1,
+    "m_SurfaceType": 0,
     "m_ZTestMode": 2,
     "m_ZWriteControl": 1,
     "m_AlphaMode": 0,
