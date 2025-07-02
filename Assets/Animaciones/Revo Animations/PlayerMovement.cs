@@ -47,6 +47,12 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     [SerializeField] public AnimatorBasic _animatorBasic;
 
+    [Header("Interaction Settings")]
+    [Tooltip("Radio de interacción para objetos interactuables")]
+    public float interactRadius = 2f;
+    [Tooltip("Layers que el player puede interactuar (configurable en Inspector)")]
+    public LayerMask interactLayers;
+
     [Header("Inventory")]
     [SerializeField] private GameObject _element0;
     [SerializeField] private Inventory _inventory;
@@ -100,6 +106,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     private void Start()
     {
+        if (_animatorBasic != null)
+            _animatorBasic._playerMovement = this;
+
         _currentHealth = _maxHealth;
         _inventory = new Inventory(8, _element0);
         AddModules(_projectorPosition);
@@ -113,11 +122,17 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         // Guardar colores originales si las referencias están asignadas
         if (_damageLight != null)
             _originalLightColor = _damageLight.color;
+
+        if (_animatorBasic != null)
+            _animatorBasic._playerMovement = this;
     }
 
     void Update()
     {
         HandleTimers();
+
+        _animatorBasic.animator.SetBool("IsGrounded", Controller.isGrounded);
+        _animatorBasic.animator.SetBool("IsStunned", false);
 
         if (EnableMovement)
         {
@@ -130,17 +145,53 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
             Controller.Move(velocity * Time.deltaTime);
         }
 
-        UpdateAnimation();
+        pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
 
+
+
+        // Press
         if (Input.GetKeyDown(KeyCode.E) && CollectWeapon() && CanWeaponChange)
         {
             Weapon myWeapon = _elementDetected.GetComponent<Weapon>();
-            if (myWeapon != null) AddModules(_module1);
+            if (myWeapon != null)
+                AddModules(_module1);
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // Obtenemos todos los colliders en el rango sin filtrar layers
+            Collider[] hits = Physics.OverlapSphere(transform.position, interactRadius);
+            GameObject target = null;
+            foreach (var col in hits)
+            {
+                int layerMaskOfHit = 1 << col.gameObject.layer;
+                if ((interactLayers.value & layerMaskOfHit) != 0)
+                {
+                    target = col.gameObject;
+                    break;
+                }
+            }
+
+            // Si encontramos un objeto interactuable
+            if (target != null)
+            {
+                _animatorBasic.animator.SetTrigger("Press");
+
+                // Evitar spam: una vez interactuado, cambiamos su layer para excluirlo
+                target.layer = LayerMask.NameToLayer("Default");
+
+                // Aquí puedes agregar más lógica de interacción aparte de recolectar armas
+            }
+
+
+        }
+
 
         // Levitar objetos
         if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
         {
+
+
             _elementLevitated = _elementDetected;
             IPuzzlesElements myPuzzle = _elementLevitated.GetComponent<IPuzzlesElements>();
             if (myPuzzle == null)
@@ -195,6 +246,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
             SelectModule(3);
         }
     }
+
+   
 
     private void HandleLevitatingObject()
     {
@@ -277,6 +330,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     private void SelectModule(int index)
     {
+        _animatorBasic.animator = _inventory.MyCurrentAnimator();
+        _animatorBasic._playerMovement = this;
+
         if (index > _inventory.MyItemsCount() - 1) return;
         _weaponSelected = _inventory.SelectWeapon(index);
         _weaponSelected.GetComponent<Weapon>().MyStart();
@@ -385,6 +441,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     private void OnDrawGizmosSelected()
     {
+         Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
+
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _viewRadius);
 
@@ -455,15 +514,13 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
                 velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
                 jumpBufferCounter = 0f;
                 coyoteCounter = 0f;
+
+                // Trigger de salto
+                _animatorBasic.animator?.SetTrigger("Jump");
             }
         }
         velocity.y += gravity * Time.deltaTime;
         Controller.Move(velocity * Time.deltaTime);
-    }
-
-    private void UpdateAnimation()
-    {
-        pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
     }
     #endregion
 
@@ -544,13 +601,12 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     public void Damage(float damage)
     {
         _currentHealth -= damage;
-
-        // Activar el efecto visual
+        // Trigger de stun
+        _animatorBasic.animator?.SetTrigger("Stun");
         StartCoroutine(DamageEffect());
-
         if (_currentHealth <= 0f)
         {
-            // Morir
+            // morir
         }
     }
     #endregion
