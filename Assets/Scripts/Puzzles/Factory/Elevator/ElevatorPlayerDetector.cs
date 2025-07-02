@@ -24,7 +24,7 @@ public class ElevatorPlayerDetector : MonoBehaviour
             }
         }
     }
-
+    /*
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -34,5 +34,5 @@ public class ElevatorPlayerDetector : MonoBehaviour
             if (batteryPromptPanel != null)
                 batteryPromptPanel.SetActive(false);
         }
-    }
+    }*/
 }

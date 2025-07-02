@@ -168,7 +168,7 @@ public class ElevatorPower : MonoBehaviour
     {
         playerOnPlatform = state;
 
-        if (hasPower && playerOnPlatform)
+        if (hasPower && playerOnPlatform && !isMoving)
         {
             StartCoroutine(MoveElevator());
         }
@@ -181,6 +181,8 @@ public class ElevatorPower : MonoBehaviour
 
     IEnumerator MoveElevator()
     {
+        if (isMoving) yield break;
+
         isMoving = true;
 
         if (audioSource != null && elevatorMoveClip != null)
