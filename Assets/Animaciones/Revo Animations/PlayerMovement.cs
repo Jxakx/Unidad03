@@ -161,23 +161,29 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         {
             // Obtenemos todos los colliders en el rango sin filtrar layers
             Collider[] hits = Physics.OverlapSphere(transform.position, interactRadius);
-            bool found = false;
+            GameObject target = null;
             foreach (var col in hits)
             {
                 int layerMaskOfHit = 1 << col.gameObject.layer;
                 if ((interactLayers.value & layerMaskOfHit) != 0)
                 {
-                    found = true;
+                    target = col.gameObject;
                     break;
                 }
             }
 
-            // Si encontramos al menos uno en las layers permitidas, disparamos la animación
-            if (found)
+            // Si encontramos un objeto interactuable
+            if (target != null)
             {
                 _animatorBasic.animator.SetTrigger("Press");
+
+                // Evitar spam: una vez interactuado, cambiamos su layer para excluirlo
+                target.layer = LayerMask.NameToLayer("Default");
+
                 // Aquí puedes agregar más lógica de interacción aparte de recolectar armas
             }
+
+
         }
 
 
