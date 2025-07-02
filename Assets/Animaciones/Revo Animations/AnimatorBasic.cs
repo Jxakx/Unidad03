@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimatorBasic : MonoBehaviour
 {
-    [SerializeField] PlayerMovement _playerMovement;
+    public PlayerMovement _playerMovement;
 
     [Header("Animation Settings")]
     [Range(0f, 1f)]
