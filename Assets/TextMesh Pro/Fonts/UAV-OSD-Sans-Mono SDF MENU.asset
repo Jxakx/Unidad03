@@ -28,7 +28,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _EmissionPower: 4
+    - _EmissionPower: 2
     m_Colors:
     - _EmissionDiariox: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

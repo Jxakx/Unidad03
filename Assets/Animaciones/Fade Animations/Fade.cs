@@ -1,18 +1,64 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Fade : MonoBehaviour
 {
-    public Animator animator;
+    [Header("Global Volume Reference")]
+    public Volume globalVolume;
 
-    public void FadeOut()
+    [Header("Settings")]
+    [Tooltip("Time in seconds to fade in/out the volume")]
+    public float fadeDuration = 1f;
+    [Tooltip("Time in seconds to keep the volume at full strength")]
+    public float holdDuration = 2f;
+
+    private bool isProcessing = false;
+
+    private void OnTriggerEnter(Collider other)
     {
-        animator.Play("FadeOut");
+        if (!isProcessing && other.CompareTag("DeathZone"))
+        {
+            StartCoroutine(TriggerVolumeEffect());
+        }
     }
 
-    public void FadeIn()
+    private IEnumerator TriggerVolumeEffect()
     {
-        animator.Play("FadeIn");
+        isProcessing = true;
+
+        if (globalVolume != null)
+        {
+            globalVolume.weight = 0f;
+            globalVolume.enabled = true;
+
+            // Fade in (0 to 1 smoothly)
+            float timer = 0f;
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                globalVolume.weight = Mathf.Clamp01(timer / fadeDuration);
+                yield return null;
+            }
+            globalVolume.weight = 1f;
+
+            // Hold full effect
+            yield return new WaitForSeconds(holdDuration);
+
+            // Fade out (1 to 0 smoothly)
+            timer = 0f;
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                globalVolume.weight = Mathf.Clamp01(1f - (timer / fadeDuration));
+                yield return null;
+            }
+            globalVolume.weight = 0f;
+
+            globalVolume.enabled = false;
+        }
+
+        isProcessing = false;
     }
 }
