@@ -2868,7 +2868,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -28349,22 +28349,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf9a3948ab32284f9354b5f3e4a57ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elevator: {fileID: 62729746}
-  upPosition: {fileID: 1755127402}
-  downPosition: {fileID: 464591412}
-  speed: 3
-  elevatorPromptPanel: {fileID: 1555575208}
-  elevatorPromptText: {fileID: 576659797}
   statusLight: {fileID: 153688824}
   secondaryStatusLight: {fileID: 1146065441}
-  audioSource: {fileID: 592822067}
-  elevatorMoveClip: {fileID: 8300000, guid: 6fb37609ed09821439ed54ebdc789664, type: 3}
   _batteryBox: {fileID: 6584330191194149858}
   _pointA: {fileID: 1664817053}
   _pointB: {fileID: 1306379023}
   _speedBoxBattery: 3
-  _playerInAreaBatteryBox: 0
-  _isIntaling: 0
   _points:
   - {fileID: 712019062}
   - {fileID: 1741947586}
@@ -28375,8 +28365,6 @@ MonoBehaviour:
   _rbBattery: {fileID: 1573691545}
   _batterySpeed: 5
   _batterySpeedRotation: 5
-  _activateAscensor: 0
-  _playerScript: {fileID: 7326339120592517016}
   offsetY: -90
 --- !u!82 &592822067
 AudioSource:
@@ -28385,7 +28373,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147968811021}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6fb37609ed09821439ed54ebdc789664, type: 3}
@@ -41653,8 +41641,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevatorPower: {fileID: 592822066}
+  elevatorPromptPanel: {fileID: 0}
+  elevatorPromptText: {fileID: 0}
   batteryPromptPanel: {fileID: 0}
   batteryPromptText: {fileID: 0}
+  elevator: {fileID: 0}
+  upPosition: {fileID: 0}
+  downPosition: {fileID: 0}
+  speed: 2
+  audioSource: {fileID: 0}
+  elevatorMoveClip: {fileID: 0}
 --- !u!65 &997533770
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52805,6 +52801,7 @@ GameObject:
   - component: {fileID: 1330293639}
   - component: {fileID: 1330293641}
   - component: {fileID: 1330293640}
+  - component: {fileID: 1330293642}
   m_Layer: 0
   m_Name: ElevadorTrigger
   m_TagString: Untagged
@@ -52840,8 +52837,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevatorPower: {fileID: 592822066}
-  batteryPromptPanel: {fileID: 0}
-  batteryPromptText: {fileID: 0}
+  elevatorPromptPanel: {fileID: 0}
+  elevatorPromptText: {fileID: 0}
+  batteryPromptPanel: {fileID: 249600254}
+  batteryPromptText: {fileID: 323538512}
+  elevator: {fileID: 7805636790690445193}
+  upPosition: {fileID: 1755127402}
+  downPosition: {fileID: 464591412}
+  speed: 3
+  audioSource: {fileID: 1330293642}
+  elevatorMoveClip: {fileID: 8300000, guid: 6fb37609ed09821439ed54ebdc789664, type: 3}
 --- !u!65 &1330293641
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52861,8 +52866,104 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.600314, y: 9.282645, z: 0.52465284}
-  m_Center: {x: -0.11910798, y: 4.0174637, z: -0.12355273}
+  m_Size: {x: 0.78502345, y: 9.282645, z: 0.6612783}
+  m_Center: {x: -0.02675256, y: 4.0174637, z: -0.055240277}
+--- !u!82 &1330293642
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330293638}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6fb37609ed09821439ed54ebdc789664, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.088
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1331637083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69314,22 +69415,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf9a3948ab32284f9354b5f3e4a57ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  elevator: {fileID: 62729746}
-  upPosition: {fileID: 1755127402}
-  downPosition: {fileID: 464591412}
-  speed: 3
-  elevatorPromptPanel: {fileID: 0}
-  elevatorPromptText: {fileID: 0}
   statusLight: {fileID: 153688824}
   secondaryStatusLight: {fileID: 0}
-  audioSource: {fileID: 1831678460}
-  elevatorMoveClip: {fileID: 8300000, guid: 6fb37609ed09821439ed54ebdc789664, type: 3}
   _batteryBox: {fileID: 6080445739299610502}
   _pointA: {fileID: 1836553413}
   _pointB: {fileID: 2046615187}
   _speedBoxBattery: 3
-  _playerInAreaBatteryBox: 0
-  _isIntaling: 0
   _points:
   - {fileID: 601099684}
   - {fileID: 791144298}
@@ -69340,8 +69431,6 @@ MonoBehaviour:
   _rbBattery: {fileID: 1573691545}
   _batterySpeed: 3.5
   _batterySpeedRotation: 5
-  _activateAscensor: 0
-  _playerScript: {fileID: 7326339120592517016}
   offsetY: -90
 --- !u!135 &1831678458
 SphereCollider:

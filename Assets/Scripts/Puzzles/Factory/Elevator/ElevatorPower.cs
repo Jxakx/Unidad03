@@ -1,48 +1,31 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
 
 public class ElevatorPower : MonoBehaviour
 {
-    [Header("Elevator Settings")]
-    [SerializeField] private GameObject elevator;
-    [SerializeField] private Transform upPosition;
-    [SerializeField] private Transform downPosition;
-    [SerializeField] private float speed = 2f;
-
-    [Header("UI")]
-    [SerializeField] private GameObject elevatorPromptPanel;
-    [SerializeField] private TextMeshProUGUI elevatorPromptText;
-
-    private bool hasPower = false;
-    private bool playerOnPlatform = false;
-    private bool isMoving = false;
-
+    [Header("Power Settings")]
     [SerializeField] private Light statusLight;
     [SerializeField] private Light secondaryStatusLight;
 
-    [Header("Sonido")]
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip elevatorMoveClip;
-
-    [Header("PortaBateria")]
+    [Header("Battery Installation")]
     [SerializeField] private Transform _batteryBox;
     [SerializeField] private Transform _pointA;
     [SerializeField] private Transform _pointB;
     [SerializeField] private float _speedBoxBattery;
-    [SerializeField] private bool _playerInAreaBatteryBox;
-    [SerializeField] private bool _isIntaling = false;
-
     [SerializeField] private List<Transform> _points;
     [SerializeField] private GameObject _battery;
     [SerializeField] private Rigidbody _rbBattery;
-    private int _indexBattery = 0;
     [SerializeField] private float _batterySpeed = 5;
     [SerializeField] private float _batterySpeedRotation = 5;
-    [SerializeField] private bool _activateAscensor = false;
-    [SerializeField] private PlayerMovement _playerScript;
     [SerializeField] private float offsetY = -90f;
+
+    private bool _isInstalling = false;
+    private int _indexBattery = 0;
+    private bool _powerActivated = false;
+    private PlayerMovement _playerScript;
+
+    public bool HasPower => _powerActivated;
 
     private void Start()
     {
@@ -51,46 +34,56 @@ public class ElevatorPower : MonoBehaviour
 
         if (secondaryStatusLight != null)
             secondaryStatusLight.color = Color.red;
+
+        // Encontrar el jugador si no está asignado
+        if (_playerScript == null)
+            _playerScript = FindObjectOfType<PlayerMovement>();
     }
 
     private void Update()
     {
-        if (_isIntaling)
+        if (_isInstalling)
         {
-            Vector3 dir = (_points[_indexBattery].transform.position - _battery.transform.position).normalized;
-            _battery.transform.position += dir * _batterySpeed * Time.deltaTime;
-            GirarHacia(_points[_indexBattery].transform.position);
-            if (Vector3.Distance(_battery.transform.position, _points[_indexBattery].transform.position) < 0.2f)
-            {
-                _indexBattery++;
-            }
-            if (_indexBattery > _points.Count - 1)
-            {
-                _activateAscensor = true;
-                _isIntaling = false;
-                _battery.transform.SetParent(_batteryBox);
-                StartCoroutine(OpenCloseBoxBattery(_pointA));
-                ActivateAscensor();
-            }
+            MoveBatteryToPosition();
         }
     }
 
-    private void GirarHacia(Vector3 target)
+    private void MoveBatteryToPosition()
     {
-        Vector3 direccion = (target - _battery.transform.position);
-        direccion.y = 0;
-        if (direccion.sqrMagnitude < 0.001f) return;
+        Vector3 dir = (_points[_indexBattery].transform.position - _battery.transform.position).normalized;
+        _battery.transform.position += dir * _batterySpeed * Time.deltaTime;
+        RotateTowards(_points[_indexBattery].transform.position);
 
-        Quaternion rotDeseada = Quaternion.LookRotation(direccion.normalized, Vector3.up);
-        Quaternion rotCorregida = rotDeseada * Quaternion.Euler(0, offsetY, 0);
+        if (Vector3.Distance(_battery.transform.position, _points[_indexBattery].transform.position) < 0.2f)
+        {
+            _indexBattery++;
+        }
 
-        _battery.transform.rotation = Quaternion.Slerp(_battery.transform.rotation, rotCorregida,
+        if (_indexBattery >= _points.Count)
+        {
+            _isInstalling = false;
+            _battery.transform.SetParent(_batteryBox);
+            StartCoroutine(OpenCloseBoxBattery(_pointA));
+            ActivatePower();
+        }
+    }
+
+    private void RotateTowards(Vector3 target)
+    {
+        Vector3 direction = (target - _battery.transform.position);
+        direction.y = 0;
+        if (direction.sqrMagnitude < 0.001f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+        Quaternion correctedRotation = targetRotation * Quaternion.Euler(0, offsetY, 0);
+
+        _battery.transform.rotation = Quaternion.Slerp(_battery.transform.rotation, correctedRotation,
                                               _batterySpeedRotation * Time.deltaTime);
     }
 
-    private void ActivateAscensor()
+    private void ActivatePower()
     {
-        hasPower = true;
+        _powerActivated = true;
         Debug.Log("Batería instalada, elevador con energía.");
 
         if (statusLight != null)
@@ -99,12 +92,10 @@ public class ElevatorPower : MonoBehaviour
         if (secondaryStatusLight != null)
             secondaryStatusLight.color = Color.green;
 
-        if (elevatorPromptPanel != null)
-            elevatorPromptPanel.SetActive(false);
-
-        if (playerOnPlatform && !isMoving)
+        ElevatorPlayerDetector detector = FindObjectOfType<ElevatorPlayerDetector>();
+        if (detector != null)
         {
-            StartCoroutine(MoveElevator());
+            detector.OnPowerActivated();
         }
     }
 
@@ -116,26 +107,19 @@ public class ElevatorPower : MonoBehaviour
             if (battery != null && battery.isCharged)
             {
                 var UIBattery = other.GetComponent<InteractableText>();
-                UIBattery._isUIActivate = false;
-                StartCoroutine(OpenCloseBoxBattery(_pointB));
-                _playerScript.colectables.Remove(_battery);
-                _playerScript.NoLevitate();
-                _rbBattery.isKinematic = true;
-                _isIntaling = true;
-            }
-        }
-        else if (other.CompareTag("Player"))
-        {
-            if (!hasPower)
-            {
-                if (elevatorPromptPanel != null)
-                    elevatorPromptPanel.SetActive(true);
-            }
+                if (UIBattery != null)
+                    UIBattery._isUIActivate = false;
 
-            if (_batteryBox != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)
-            {
-                StopAllCoroutines();
-                if (!_activateAscensor) StartCoroutine(OpenCloseBoxBattery(_pointB));
+                StartCoroutine(OpenCloseBoxBattery(_pointB));
+                if (_playerScript != null)
+                {
+                    _playerScript.colectables.Remove(_battery);
+                    _playerScript.NoLevitate();
+                }
+
+                _rbBattery.isKinematic = true;
+                _isInstalling = true;
+                _indexBattery = 0; // Resetear índice
             }
         }
     }
@@ -148,66 +132,5 @@ public class ElevatorPower : MonoBehaviour
             _batteryBox.position += dir * _speedBoxBattery * Time.deltaTime;
             yield return null;
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _playerInAreaBatteryBox = false;
-            StopAllCoroutines();
-            if (!_isIntaling) StartCoroutine(OpenCloseBoxBattery(_pointA));
-            SetPlayerOnPlatform(false);
-
-            if (elevatorPromptPanel != null)
-                elevatorPromptPanel.SetActive(false);
-        }
-    }
-
-    public void SetPlayerOnPlatform(bool state)
-    {
-        playerOnPlatform = state;
-
-        if (hasPower && playerOnPlatform && !isMoving)
-        {
-            StartCoroutine(MoveElevator());
-        }
-    }
-
-    public bool HasPower()
-    {
-        return hasPower;
-    }
-
-    IEnumerator MoveElevator()
-    {
-        if (isMoving) yield break;
-
-        isMoving = true;
-
-        if (audioSource != null && elevatorMoveClip != null)
-        {
-            audioSource.PlayOneShot(elevatorMoveClip);
-        }
-
-        Vector3 currentPos = elevator.transform.position;
-        Vector3 target;
-
-        if (Vector3.Distance(currentPos, downPosition.position) < 0.1f)
-        {
-            target = upPosition.position;
-        }
-        else
-        {
-            target = downPosition.position;
-        }
-
-        while (Vector3.Distance(elevator.transform.position, target) > 0.05f)
-        {
-            elevator.transform.position = Vector3.MoveTowards(elevator.transform.position, target, speed * Time.deltaTime);
-            yield return null;
-        }
-
-        isMoving = false;
     }
 }
