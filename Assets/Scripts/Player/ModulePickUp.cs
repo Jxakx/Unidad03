@@ -16,7 +16,7 @@ public class ModulePickup : MonoBehaviour
         {
             collider = gameObject.AddComponent<SphereCollider>();
         }
-        collider.radius = 1.0f;
+        collider.radius = 2f;
         collider.isTrigger = true;
 
         // Añadir Rigidbody para física
@@ -30,7 +30,7 @@ public class ModulePickup : MonoBehaviour
         }
 
         // Forzar escala constante
-        transform.localScale = Vector3.one * 0.5f;
+        transform.localScale = Vector3.one * 0.3f;
 
         // Añadir renderer si no existe
         if (GetComponent<MeshRenderer>() == null)
