@@ -64,6 +64,6 @@ Material:
     - _WaveWidth: 2
     m_Colors:
     - _Color: {r: 0, g: 1.7979794, b: 2, a: 0}
-    - _WaveCenter: {r: -55.6, g: 0.43, b: -80.8, a: 0}
+    - _WaveCenter: {r: -138.3, g: 0.43, b: -80.8, a: 0}
     - _WaveColor: {r: 0, g: 0.8, b: 1, a: 0.7}
   m_BuildTextureStacks: []
