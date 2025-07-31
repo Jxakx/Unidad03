@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -21,9 +22,23 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
 
-        // Mostrar cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // Agregar imagen para bloquear raycasts si no existe
+        if (!pausePanel.GetComponent<Image>())
+        {
+            Image bg = pausePanel.AddComponent<Image>();
+            bg.color = new Color(0, 0, 0, 0.01f);
+            bg.raycastTarget = true;
+        }
+
+        GraphicRaycaster raycaster = FindObjectOfType<GraphicRaycaster>();
+        if (raycaster != null)
+        {
+            raycaster.enabled = false;
+            raycaster.enabled = true;
+        }
     }
 
     public void Resume()
