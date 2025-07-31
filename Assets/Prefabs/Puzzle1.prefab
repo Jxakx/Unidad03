@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 4444470498004769576}
   - component: {fileID: 6526578467590702017}
   - component: {fileID: 3905335366456253466}
-  - component: {fileID: 7528204909522531462}
+  - component: {fileID: 3783047068195246777}
   m_Layer: 6
   m_Name: Puzzle1
   m_TagString: Fusible
@@ -308,7 +308,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7528204909522531462
+--- !u!114 &3783047068195246777
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,15 +317,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8858564259806846583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa6d81e163a8b34182ab00e6f551fcc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eb8022f75ddcab4a9ca2f087a657706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textPrefab: {fileID: 2484192460318820149, guid: 693ee0d9077768d49a09ffae23a53201, type: 3}
-  message: R
-  showDistance: 10
-  localOffset: {x: 0.33, y: 2, z: 0}
-  floatAmplitude: 0.2
-  floatFrequency: 2
-  interactableEnabled: 1
-  _playerScript: {fileID: 0}
-  _isUIActivate: 1
+  uiRadius: 5
+  particleRadius: 20
+  interactKey: 101
+  Particles: {fileID: 0}
+  Keyword: {fileID: 0}
+  InteractuableUI: {fileID: 0}
+  lorePanel: {fileID: 0}
