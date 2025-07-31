@@ -4713,18 +4713,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 111841751}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa6d81e163a8b34182ab00e6f551fcc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eb8022f75ddcab4a9ca2f087a657706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textPrefab: {fileID: 2484192460318820149, guid: 693ee0d9077768d49a09ffae23a53201, type: 3}
-  message: E
-  showDistance: 10
-  localOffset: {x: 0.33, y: 2, z: 0}
-  floatAmplitude: 0.2
-  floatFrequency: 2
-  interactableEnabled: 1
-  _playerScript: {fileID: 7326339120592517016}
-  _isUIActivate: 1
+  activationRadius: 4
+  interactKey: 101
+  proximityParticles: {fileID: 0}
+  Keyword: {fileID: 0}
+  uiPromptObject: {fileID: 0}
+  lorePanel: {fileID: 0}
 --- !u!1 &112689428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5445,8 +5442,6 @@ MonoBehaviour:
   bridgePrefab: {fileID: 3811267570785617322, guid: a03922a1151df644ca4d6fed8810b649, type: 3}
   spawnPoint: {fileID: 146170926}
   bridgeDuration: 4.5
-  interactPanel: {fileID: 1561917919}
-  interactText: {fileID: 611990953}
 --- !u!65 &143315480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14375,7 +14370,10 @@ MonoBehaviour:
   floatAmplitude: 0.2
   floatFrequency: 2
   interactableEnabled: 1
+  _player: {fileID: 0}
   _playerScript: {fileID: 7326339120592517016}
+  _instanceTMP: {fileID: 0}
+  _baseY: 0
   _isUIActivate: 1
 --- !u!1 &424591079
 GameObject:
@@ -47068,7 +47066,10 @@ MonoBehaviour:
   floatAmplitude: 0.2
   floatFrequency: 2
   interactableEnabled: 1
+  _player: {fileID: 0}
   _playerScript: {fileID: 7326339120592517016}
+  _instanceTMP: {fileID: 0}
+  _baseY: 0
   _isUIActivate: 1
 --- !u!1 &1144401310
 GameObject:
@@ -62985,7 +62986,10 @@ MonoBehaviour:
   floatAmplitude: 0.2
   floatFrequency: 2
   interactableEnabled: 1
+  _player: {fileID: 0}
   _playerScript: {fileID: 7326339120592517016}
+  _instanceTMP: {fileID: 0}
+  _baseY: 0
   _isUIActivate: 1
 --- !u!1 &1577203586
 GameObject:
@@ -70214,7 +70218,7 @@ GameObject:
   - component: {fileID: 1801542982}
   - component: {fileID: 1801542981}
   - component: {fileID: 1801542985}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Nota1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70316,22 +70320,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1801542980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0892f8e670204a14d89dfd4a60d07532, type: 3}
+  m_Script: {fileID: 11500000, guid: 0eb8022f75ddcab4a9ca2f087a657706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactTextUI: {fileID: 1561917919}
-  lorePanelUI: {fileID: 47851524}
-  loreText: {fileID: 729753655}
-  diaryEntry: "Hoy, durante una prueba de rutina en el Sector 7, la Unidad 03 desvi\xF3
-    su ruta. No por un fallo. Simplemente... cambi\xF3 de direcci\xF3n cuando vio
-    a un t\xE9cnico dejar su almuerzo en el banco.\r\n\r\nSe acerc\xF3, lo observ\xF3,
-    y luego se sent\xF3 frente al banco por exactamente cinco minutos, sin realizar
-    ninguna tarea. Eso no est\xE1 en su programaci\xF3n. Ning\xFAn algoritmo de limpieza
-    har\xEDa eso.\r\n\r\nLe pregunt\xE9 al equipo de IA, y me respondieron con evasivas.
-    Que la red neuronal est\xE1 \u201Caprendiendo por exposici\xF3n\u201D, que \"es
-    parte del progreso\u201D.\r\n\r\nPero yo vi su mirada. Estaba analizando. Pensando.\r\n\r\nTal
-    vez nos adelantamos. Tal vez no era un error que haya desaparecido el archivo
-    de \xE9tica rob\xF3tica... tal vez fue intencional.\r\n"
+  activationRadius: 4
+  interactKey: 101
+  proximityParticles: {fileID: 0}
+  Keyword: {fileID: 0}
+  uiPromptObject: {fileID: 0}
+  lorePanel: {fileID: 47851524}
 --- !u!1 &1803702048
 GameObject:
   m_ObjectHideFlags: 3
@@ -71257,8 +71254,6 @@ MonoBehaviour:
   - {fileID: 203600902}
   moveDistance: 6
   moveSpeed: 1.7
-  interactionPanel: {fileID: 1561917919}
-  interactionText: {fileID: 611990953}
   audioSource: {fileID: 1828910570}
   openDoorClip: {fileID: 8300000, guid: 1b97e0846188fbf4b979300647d8b4f7, type: 3}
 --- !u!82 &1828910570
@@ -82236,7 +82231,10 @@ MonoBehaviour:
   floatAmplitude: 0.2
   floatFrequency: 2
   interactableEnabled: 1
+  _player: {fileID: 0}
   _playerScript: {fileID: 7326339120592517016}
+  _instanceTMP: {fileID: 0}
+  _baseY: 0
   _isUIActivate: 1
 --- !u!1 &2120262015
 GameObject:
@@ -83215,7 +83213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scanPanel: {fileID: 1561917919}
-  scanPromptText: {fileID: 611990953}
+  isPlayerInRange: 0
 --- !u!65 &2146646516
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89399,8 +89397,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061419427, y: -0.7043345, z: 0.061401896, w: 0.7045356}
-  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
+  m_LocalRotation: {x: 0.061417427, y: -0.7043347, z: 0.061399896, w: 0.7045358}
+  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -97530,7 +97528,10 @@ MonoBehaviour:
   floatAmplitude: 0.2
   floatFrequency: 2
   interactableEnabled: 1
+  _player: {fileID: 0}
   _playerScript: {fileID: 7326339120592517016}
+  _instanceTMP: {fileID: 0}
+  _baseY: 0
   _isUIActivate: 1
 --- !u!4 &8142235862856502253
 Transform:
