@@ -321,9 +321,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiRadius: 5
-  particleRadius: 20
+  particleRadius: 15
+  yThreshold: 0.1
   interactKey: 101
-  Particles: {fileID: 0}
+  ParticlesPrefab: {fileID: 7745204478076125742, guid: 94cdbda8c534dcb43ba6999b9b19fbdb, type: 3}
   Keyword: {fileID: 0}
   InteractuableUI: {fileID: 0}
   lorePanel: {fileID: 0}

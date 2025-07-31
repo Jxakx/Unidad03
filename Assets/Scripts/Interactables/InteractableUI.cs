@@ -1,107 +1,135 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InteractableUI : MonoBehaviour
 {
     [Header("Rangos de proximidad")]
+    [Tooltip("Distancia en la que aparece la UI.")]
     public float uiRadius = 3f;
-    public float particleRadius = 8f;  // Punto donde comienza a prenderse
+    [Tooltip("Distancia en la que comienzan las partículas.")]
+    public float particleRadius = 8f;
+    [Tooltip("Offset adicional para apagar partículas (en unidades).")]
+    public float particleOffset = 2f;
 
-    [Header("Tecla de interacci�n")]
+    [Header("Teclas de interacción")]
+    [Tooltip("Tecla para acciones (E).")]
     public KeyCode interactKey = KeyCode.E;
+    [Tooltip("Tecla para pickup/levitar (R).")]
+    public KeyCode pickupKey = KeyCode.R;
 
     [Header("Visuales")]
-    public ParticleSystem Particles;
+    [Tooltip("Prefab de ParticleSystem.")]
+    public ParticleSystem ParticlesPrefab;
+    private ParticleSystem _particles;
+    [Tooltip("Panel UI (\"Presiona E\").")]
     public GameObject InteractuableUI;
 
-    [Header("Lore")]
+    [Header("Lore (solo layer “Lore”)")]
+    [Tooltip("Asignar solo en objetos de layer “Lore”.")]
     public GameObject lorePanel;
 
-    Transform player;
-    GameObject worldPrompt;
-    bool uiInRange = false;
-    bool loreOpen = false;
-    int loreLayer;
+    Transform _player;
+    bool _uiInRange;
+    bool _loreOpen;
+    bool _consumed;
+    bool _isLoreObject;
+    int _loreLayer;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        loreLayer = LayerMask.NameToLayer("Lore");
+        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        _loreLayer = LayerMask.NameToLayer("Lore");
+        _isLoreObject = (gameObject.layer == _loreLayer);
 
-        if (InteractuableUI != null)
-            InteractuableUI.SetActive(false);
+        // Desactivar al inicio
+        if (InteractuableUI) InteractuableUI.SetActive(false);
+        if (_isLoreObject && lorePanel) lorePanel.SetActive(false);
 
-        if (lorePanel != null)
-            lorePanel.SetActive(false);
+        // Instancio partículas
+        if (ParticlesPrefab)
+        {
+            _particles = Instantiate(
+                ParticlesPrefab,
+                transform.position,
+                Quaternion.identity,
+                transform
+            );
+            _particles.Stop();
+        }
     }
 
     void Update()
     {
-        if (player == null) return;
+        if (_consumed || _player == null) return;
 
-        float dist = Vector3.Distance(player.position, transform.position);
-        float stopDistance = uiRadius + 2f;  // apagado autom�tico
+        float dist = Vector3.Distance(_player.position, transform.position);
+        float stopDist = uiRadius + particleOffset;
 
-        // � Part�culas: si estamos ENTRE (stopDistance, particleRadius]
-        if (Particles != null)
+        // — Detecto press E o R en rango y marco consumido
+        if (_uiInRange &&
+            (Input.GetKeyDown(interactKey) || Input.GetKeyDown(pickupKey)))
         {
-            if (dist > stopDistance && dist <= particleRadius)
+            Consume();
+            return;
+        }
+
+        // — Partículas en (stopDist, particleRadius]
+        if (_particles)
+        {
+            if (dist > stopDist && dist <= particleRadius)
             {
-                if (!Particles.isPlaying)
-                    Particles.Play();
+                if (!_particles.isPlaying) _particles.Play();
             }
-            else
+            else if (_particles.isPlaying)
             {
-                if (Particles.isPlaying)
-                    Particles.Stop();
+                _particles.Stop();
             }
         }
 
-        // � UI y prompts dentro de uiRadius
-        bool shouldHaveUI = dist <= uiRadius;
-        if (!uiInRange && shouldHaveUI)
-            EnterUI();
-        else if (uiInRange && !shouldHaveUI)
-            ExitUI();
+        // — UI dentro de uiRadius
+        bool shouldShowUI = dist <= uiRadius;
+        if (!_uiInRange && shouldShowUI) EnterUI();
+        else if (_uiInRange && !shouldShowUI) ExitUI();
 
-        // � Interact para lore
-        if (uiInRange
-            && gameObject.layer == loreLayer
-            && Input.GetKeyDown(interactKey))
-        {
+        // — Interact para lore (solo layer “Lore”)
+        if (_isLoreObject && _uiInRange && Input.GetKeyDown(interactKey))
             ToggleLore();
-        }
+    }
+
+    void Consume()
+    {
+        _consumed = true;
+        // Ocultar todo
+        if (InteractuableUI) InteractuableUI.SetActive(false);
+        if (_isLoreObject && lorePanel) lorePanel.SetActive(false);
+        if (_particles && _particles.isPlaying) _particles.Stop();
     }
 
     void EnterUI()
     {
-        uiInRange = true;
-        worldPrompt?.SetActive(true);
-        InteractuableUI?.SetActive(true);
+        _uiInRange = true;
+        if (InteractuableUI) InteractuableUI.SetActive(true);
     }
 
     void ExitUI()
     {
-        uiInRange = false;
-        worldPrompt?.SetActive(false);
-        InteractuableUI?.SetActive(false);
-        CloseLore();
+        _uiInRange = false;
+        if (InteractuableUI) InteractuableUI.SetActive(false);
+        if (_isLoreObject && _loreOpen) CloseLore();
     }
 
     void ToggleLore()
     {
-        if (lorePanel == null) return;
-        loreOpen = !loreOpen;
-        lorePanel.SetActive(loreOpen);
-        worldPrompt?.SetActive(!loreOpen);
-        InteractuableUI?.SetActive(!loreOpen);
+        if (!_isLoreObject || lorePanel == null) return;
+        _loreOpen = !_loreOpen;
+        lorePanel.SetActive(_loreOpen);
+        InteractuableUI.SetActive(!_loreOpen);
     }
 
     void CloseLore()
     {
-        if (!loreOpen) return;
-        loreOpen = false;
+        if (!_loreOpen) return;
+        _loreOpen = false;
         lorePanel.SetActive(false);
-        worldPrompt?.SetActive(true);
-        InteractuableUI?.SetActive(true);
+        InteractuableUI.SetActive(true);
     }
 }
