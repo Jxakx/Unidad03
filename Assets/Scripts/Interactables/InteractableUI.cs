@@ -11,7 +11,7 @@ public class InteractableUI : MonoBehaviour
     public float particleOffset = 2f;
 
     [Header("Teclas de interacción")]
-    [Tooltip("Tecla para acciones (E).")]
+    [Tooltip("Tecla para acciones/lore (E).")]
     public KeyCode interactKey = KeyCode.E;
     [Tooltip("Tecla para pickup/levitar (R).")]
     public KeyCode pickupKey = KeyCode.R;
@@ -44,7 +44,7 @@ public class InteractableUI : MonoBehaviour
         if (InteractuableUI) InteractuableUI.SetActive(false);
         if (_isLoreObject && lorePanel) lorePanel.SetActive(false);
 
-        // Instancio partículas
+        // Instanciar partículas
         if (ParticlesPrefab)
         {
             _particles = Instantiate(
@@ -59,20 +59,31 @@ public class InteractableUI : MonoBehaviour
 
     void Update()
     {
-        if (_consumed || _player == null) return;
+        if (_player == null) return;
 
         float dist = Vector3.Distance(_player.position, transform.position);
         float stopDist = uiRadius + particleOffset;
 
-        // — Detecto press E o R en rango y marco consumido
+        // --- TOGGLE LORE FIRST (always allowed for Lore objects)
+        if (_isLoreObject && _uiInRange && Input.GetKeyDown(interactKey))
+        {
+            ToggleLore();
+            return; // skip consumption or other logic this frame
+        }
+
+        // --- CONSUME on E (non-lore) or R
         if (_uiInRange &&
-            (Input.GetKeyDown(interactKey) || Input.GetKeyDown(pickupKey)))
+            (_isLoreObject == false && Input.GetKeyDown(interactKey)
+             || Input.GetKeyDown(pickupKey)))
         {
             Consume();
             return;
         }
 
-        // — Partículas en (stopDist, particleRadius]
+        if (_consumed)
+            return;
+
+        // --- PARTÍCULAS en (stopDist, particleRadius]
         if (_particles)
         {
             if (dist > stopDist && dist <= particleRadius)
@@ -85,22 +96,17 @@ public class InteractableUI : MonoBehaviour
             }
         }
 
-        // — UI dentro de uiRadius
+        // --- UI prompt dentro de uiRadius
         bool shouldShowUI = dist <= uiRadius;
         if (!_uiInRange && shouldShowUI) EnterUI();
         else if (_uiInRange && !shouldShowUI) ExitUI();
-
-        // — Interact para lore (solo layer “Lore”)
-        if (_isLoreObject && _uiInRange && Input.GetKeyDown(interactKey))
-            ToggleLore();
     }
 
     void Consume()
     {
         _consumed = true;
-        // Ocultar todo
+        // Ocultar todo menos lore
         if (InteractuableUI) InteractuableUI.SetActive(false);
-        if (_isLoreObject && lorePanel) lorePanel.SetActive(false);
         if (_particles && _particles.isPlaying) _particles.Stop();
     }
 
@@ -119,7 +125,7 @@ public class InteractableUI : MonoBehaviour
 
     void ToggleLore()
     {
-        if (!_isLoreObject || lorePanel == null) return;
+        // lorePanel debe existir si es objeto Lore
         _loreOpen = !_loreOpen;
         lorePanel.SetActive(_loreOpen);
         InteractuableUI.SetActive(!_loreOpen);
@@ -127,7 +133,6 @@ public class InteractableUI : MonoBehaviour
 
     void CloseLore()
     {
-        if (!_loreOpen) return;
         _loreOpen = false;
         lorePanel.SetActive(false);
         InteractuableUI.SetActive(true);
