@@ -9,10 +9,6 @@ public class DuctButton : MonoBehaviour
     [SerializeField] private float moveDistance = 2f;
     [SerializeField] private float moveSpeed = 1f;
 
-    [Header("UI Interacción")]
-    [SerializeField] private GameObject interactionPanel; // Panel con el texto "Presiona E"
-    [SerializeField] private TMP_Text interactionText;
-
     private bool isPlayerInRange = false;
     private bool opened = false;
 
@@ -22,8 +18,6 @@ public class DuctButton : MonoBehaviour
 
     private void Start()
     {
-        if (interactionPanel != null)
-            interactionPanel.SetActive(false);
     }
 
     private void Update()
@@ -31,7 +25,6 @@ public class DuctButton : MonoBehaviour
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && !opened)
         {
             opened = true;
-            interactionPanel.SetActive(false);
 
             // Sonido de abrir puerta
             if (audioSource != null && openDoorClip != null)
@@ -51,10 +44,6 @@ public class DuctButton : MonoBehaviour
         if (other.CompareTag("Player") && !opened)
         {
             isPlayerInRange = true;
-            if (interactionPanel != null)
-            {
-                interactionPanel.SetActive(true);
-            }
         }
     }
 
@@ -63,8 +52,6 @@ public class DuctButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            if (interactionPanel != null)
-                interactionPanel.SetActive(false);
         }
     }
 

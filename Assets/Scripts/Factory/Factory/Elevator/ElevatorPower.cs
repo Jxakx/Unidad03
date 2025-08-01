@@ -106,9 +106,9 @@ public class ElevatorPower : MonoBehaviour
             PortableBattery battery = other.GetComponent<PortableBattery>();
             if (battery != null && battery.isCharged)
             {
-                var UIBattery = other.GetComponent<InteractableText>();
-                if (UIBattery != null)
-                    UIBattery._isUIActivate = false;
+                //var UIBattery = other.GetComponent<InteractableText>();
+                //if (UIBattery != null)
+                //    UIBattery._isUIActivate = false;
 
                 StartCoroutine(OpenCloseBoxBattery(_pointB));
                 if (_playerScript != null)
