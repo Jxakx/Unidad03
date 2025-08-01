@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SimpleObjectRespawn : MonoBehaviour
+public class ObjectRespawn : MonoBehaviour
 {
     [Header("Respawn Settings")]
     public Transform respawnPoint;  // Arrastra aquí el GameObject vacío que marca la posición de respawn
