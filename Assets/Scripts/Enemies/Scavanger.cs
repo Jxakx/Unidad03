@@ -74,7 +74,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
 
         _dirPlayer = (_playerTransform.position - _origen.position).normalized;
 
-        Debug.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
+        //Debug.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
 
         if (Physics.Raycast(transform.position, _dirPlayer, out RaycastHit hit, _distAttack, _playerLayer))
         {
@@ -189,6 +189,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
     private void WalkingArround()
     {
         //Aqui hace la ronda entre los puntos
+        _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
         transform.position += _dir * _speed * Time.deltaTime;
         GirarHacia(_movPoints[_indexMovPoints].transform.position);
 
@@ -206,7 +207,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
                 _indexMovPoints++;
             }
 
-            _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+            //_dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
 
 
             ResetAnimatorParameters();
