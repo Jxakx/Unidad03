@@ -5892,6 +5892,7 @@ MonoBehaviour:
   bridgePrefab: {fileID: 3811267570785617322, guid: a03922a1151df644ca4d6fed8810b649, type: 3}
   spawnPoint: {fileID: 146170926}
   bridgeDuration: 4.5
+  dissolveSpeed: 1
 --- !u!65 &143315480
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -96907,7 +96908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06142212, y: -0.70433426, z: 0.06140459, w: 0.70453537}
+  m_LocalRotation: {x: 0.061417248, y: -0.7043347, z: 0.061399717, w: 0.7045358}
   m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

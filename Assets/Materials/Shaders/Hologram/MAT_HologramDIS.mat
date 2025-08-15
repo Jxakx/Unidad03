@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1408961367244488452
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -20,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ProyectorEye MAT
-  m_Shader: {fileID: -6465566751694194690, guid: 0c360382a8665ed4a9060873c232e70d, type: 3}
+  m_Name: MAT_HologramDIS
+  m_Shader: {fileID: -6465566751694194690, guid: 763407cbbe18e7441b794a4aa6737d46, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -55,18 +42,25 @@ Material:
     m_Ints: []
     m_Floats:
     - _ControlEfectoFBX: 1
-    - _Float: 0.11
-    - _IrisRadius: 0.2
-    - _Posiciaioan: -0.25
+    - _Disolve: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _VelocidadHolograma: 0.1
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.37081882, b: 0.9811321, a: 0}
-    - _FresnelColor: {r: 0, g: 0.8323223, b: 2.0381227, a: 0}
+    - _BaseColor: {r: 0.078431375, g: 0.29411766, b: 0.34117648, a: 0}
+    - _FresnelColor: {r: 0.8972924, g: 1.5702617, b: 3.2958236, a: 0.5529412}
     - _HologramaTiling: {r: 1, g: 3, b: 0, a: 0}
-    - _IrisColor: {r: 0.8349056, g: 0.99805766, b: 1, a: 0}
-    - _IrisOffset: {r: 0.46461493, g: 0.53457874, b: 0, a: 0}
-    - _PosicionOjo: {r: -2.33, g: -0.16, b: 0, a: 0}
-    - _Tama_oOjo: {r: 7.37, g: 0.37, b: 0, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &1672550243654625580
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
