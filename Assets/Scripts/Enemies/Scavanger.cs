@@ -55,6 +55,11 @@ public class Scavanger : MonoBehaviour, IDamagiable
     [SerializeField] private float _stunDuration = 1.5f;
     private bool _isStunned = false;
 
+    [Header("Debug Visualization")]
+    [SerializeField] private Color _visionColor = Color.yellow;
+    [SerializeField] private Color _attackColor = Color.red;
+    [SerializeField] private Color _detectionOriginColor = Color.blue;
+
     private void Start()
     {
         _currentHealth = _maxHealth;
@@ -323,6 +328,26 @@ public class Scavanger : MonoBehaviour, IDamagiable
             ps.Play();
             Destroy(ps.gameObject, ps.main.duration);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // 1. Rango de visión (detección del jugador)
+        Gizmos.color = _visionColor;
+        Gizmos.DrawWireSphere(transform.position, _distAttack);
+
+        // 2. Rango de ataque (para causar daño)
+        Gizmos.color = _attackColor;
+        Gizmos.DrawWireSphere(transform.position, _distAttackDamage);
+
+        // 3. Origen de detección (si existe)
+        if (_origen != null)
+        {
+            Gizmos.color = _detectionOriginColor;
+            Gizmos.DrawSphere(_origen.position, 0.1f);
+            Gizmos.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
+        }
+
     }
 
 }

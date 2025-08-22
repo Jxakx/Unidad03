@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [Header("Jump Settings")]
     public float jumpForce = 8f;
     public float gravity = -20f;
-    public float coyoteTime = 0.2f;
+    public float coyoteTime = 0.15f;
     public float jumpBufferTime = 0.1f;
 
     [Header("Animation Settings")]
@@ -506,20 +506,26 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     private void HandleGravityAndJump()
     {
-        if (Controller.isGrounded && velocity.y <= 0f)
+        // 1. Aplicar gravedad siempre
+        velocity.y += gravity * Time.deltaTime;
+
+        // 2. Resetear velocidad vertical al tocar suelo
+        if (Controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
-            if (jumpBufferCounter > 0f && coyoteCounter > 0f)
-            {
-                velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
-                jumpBufferCounter = 0f;
-                coyoteCounter = 0f;
-
-                // Trigger de salto
-                _animatorBasic.animator?.SetTrigger("Jump");
-            }
+            coyoteCounter = coyoteTime; // Reiniciar coyote al tocar suelo
         }
-        velocity.y += gravity * Time.deltaTime;
+
+        // 3. Comprobar salto DURANTE el coyote time (aunque no estés en el suelo)
+        if (jumpBufferCounter > 0f && coyoteCounter > 0f)
+        {
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            jumpBufferCounter = 0f;
+            coyoteCounter = 0f;
+            _animatorBasic.animator?.SetTrigger("Jump");
+        }
+
+        // 4. Mover el controlador
         Controller.Move(velocity * Time.deltaTime);
     }
     #endregion
