@@ -79,13 +79,12 @@ public class Scavanger : MonoBehaviour, IDamagiable
 
         _dirPlayer = (_playerTransform.position - _origen.position).normalized;
 
-        //Debug.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
+        Debug.DrawLine(_origen.position, _origen.position + _dirPlayer * _distAttack);
 
         if (Physics.Raycast(transform.position, _dirPlayer, out RaycastHit hit, _distAttack, _playerLayer))
         {
             if (hit.transform.gameObject.layer == _playerTransform.gameObject.layer)
             {
-                
                 //El player esta en el rango de ataque
                 if (Vector3.Distance(transform.position, _playerScript.transform.position) <= _distAttackDamage)
                 {
@@ -97,7 +96,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
                         _currentState = LookToAttack;
                         _canShase = true;
                         _canAttack = false;
-                    }
+                    } 
                 }
                 else
                 {
@@ -125,7 +124,16 @@ public class Scavanger : MonoBehaviour, IDamagiable
         else
         {
             //Salio del rango de vision
+            print("Entro aca");
             if (!_canShase)
+            {
+                ResetAnimatorParameters();
+                _anim.SetBool("isWalking", true);
+                _dir = (_movPoints[_indexMovPoints].transform.position - transform.position).normalized;
+                _currentState = WalkingArround;
+                _canShase = true;
+                _canAttack = true;
+            }else if (_playerScript._isDeath)
             {
                 ResetAnimatorParameters();
                 _anim.SetBool("isWalking", true);

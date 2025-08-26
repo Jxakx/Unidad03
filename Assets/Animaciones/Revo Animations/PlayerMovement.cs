@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour, IDamagiable
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [Header("Player")]
     [SerializeField] private float _maxHealth;
     [SerializeField] private float _currentHealth;
+    public bool _isDeath;
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -612,8 +614,77 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         StartCoroutine(DamageEffect());
         if (_currentHealth <= 0f)
         {
-            // morir
+            _isDeath = true;
+            StartCoroutine(RespawnWithVolumeFade());
         }
+    }
+    #endregion
+
+    //**********************************************************************************
+    //**********************************************************************************
+    //**********************************RESPAWN*****************************************
+    //**********************************************************************************
+    //**********************************************************************************
+    #region RespawnPlayer
+    [Header("Respawn Settings")]
+    public Transform respawnPoint;         // Punto donde reaparece el jugador
+    public float teleportDelay = 1f;       // Tiempo de espera antes de teletransportar al jugador
+
+    [Header("Global Volume Reference")]
+    public Volume globalVolume;            // El Global Volume para el efecto
+    public float volumeEffectDuration = 2f; // Tiempo total que el efecto permanece activo
+    public float fadeDuration = 1f;         // Tiempo de transición para el fade in/out
+
+    private bool isProcessing = false;
+
+    private IEnumerator RespawnWithVolumeFade()
+    {
+        isProcessing = true;
+
+        // Activar Global Volume gradualmente (Fade In)
+        if (globalVolume != null)
+        {
+            globalVolume.enabled = true;
+            yield return StartCoroutine(FadeVolume(0f, 1f));
+        }
+
+        // Esperar antes de teletransportar
+        yield return new WaitForSeconds(teleportDelay);
+
+        // Teletransportar al jugador
+        var cc = GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+        transform.position = respawnPoint.position;
+        _currentHealth = _maxHealth;
+        if (cc != null) cc.enabled = true;
+
+        // Esperar duración del efecto completo (menos lo que ya esperamos antes)
+        float remainingEffectTime = Mathf.Max(0f, volumeEffectDuration - teleportDelay);
+        yield return new WaitForSeconds(remainingEffectTime);
+
+        // Desactivar Global Volume gradualmente (Fade Out)
+        if (globalVolume != null)
+        {
+            yield return StartCoroutine(FadeVolume(1f, 0f));
+            globalVolume.enabled = false;
+        }
+        _isDeath = false;
+        isProcessing = false;
+    }
+
+    private IEnumerator FadeVolume(float from, float to)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            globalVolume.weight = Mathf.Lerp(from, to, t);
+            yield return null;
+        }
+
+        globalVolume.weight = to;
     }
     #endregion
 }
