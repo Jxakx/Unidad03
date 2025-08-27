@@ -7,6 +7,7 @@ TagManager:
   - Battery
   - DeathZone
   - Fusible
+  - RespawnObject
   layers:
   - Default
   - TransparentFX
