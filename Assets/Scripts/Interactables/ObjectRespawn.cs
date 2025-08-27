@@ -28,7 +28,7 @@ public class ObjectRespawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("DeathZone"))
+        if (other.CompareTag("RespawnObject"))
         {
             Invoke("RespawnObject", respawnDelay);
         }
