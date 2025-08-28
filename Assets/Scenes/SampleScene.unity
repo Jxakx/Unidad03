@@ -98037,7 +98037,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061417148, y: -0.70433474, z: 0.061399616, w: 0.70453584}
+  m_LocalRotation: {x: 0.061419338, y: -0.70433456, z: 0.061401807, w: 0.70453566}
   m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -102711,7 +102711,7 @@ MonoBehaviour:
   maxDistanceFromPlayer: 3
   levitationRotationSpeed: 5
   _viewRadius: 10
-  _viewAngle: 85
+  _viewAngle: 145
   colectables:
   - {fileID: 1471389672}
   - {fileID: 420215912}
