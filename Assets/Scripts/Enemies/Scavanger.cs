@@ -124,7 +124,7 @@ public class Scavanger : MonoBehaviour, IDamagiable
         else
         {
             //Salio del rango de vision
-            print("Entro aca");
+            //print("Entro aca");
             if (!_canShase)
             {
                 ResetAnimatorParameters();

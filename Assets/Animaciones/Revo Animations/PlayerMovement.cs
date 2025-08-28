@@ -76,6 +76,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     private Color _originalMaterialColor2;
     private bool _colorsSaved = false; // Para asegurar que guardamos los colores solo una vez
 
+    [Header("Conexiones Externas")]
+    [SerializeField] private PauseMenu _pauseMenu;
 
     public bool IsInvisible
     {
@@ -225,7 +227,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
             HandleLevitatingObject();
         }
 
-        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q)) && CanWeaponChange)
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q)) && CanWeaponChange && !_pauseMenu.isPaused)
         {
             CanWeaponChange = false;
             _weaponSelected.GetComponent<IModules>().PowerElement();
