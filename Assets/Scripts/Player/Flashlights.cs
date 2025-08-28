@@ -31,6 +31,9 @@ public class Flashlights : MonoBehaviour
     [SerializeField] private AudioClip sonidoEncender;
     [SerializeField] private AudioClip sonidoApagar;
 
+    [Header("Conexiones Externas")]
+    [SerializeField] private PauseMenu _pauseMenu;
+
     private AudioSource audioSource;
     private bool lucesEncendidas;
     private Transform activeBone; // Hueso activo actual
@@ -67,7 +70,7 @@ public class Flashlights : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && !_pauseMenu.isPaused)
         {
             ToggleLuces();
         }
