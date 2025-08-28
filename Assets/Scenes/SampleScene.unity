@@ -60024,7 +60024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 467586388}
-  isPaused: 0
 --- !u!1 &1369793814
 GameObject:
   m_ObjectHideFlags: 0
@@ -77967,7 +77966,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796289591}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.0015014}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 0.60049, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -77975,8 +77974,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 21.468353, y: 7.7003164}
-  m_SizeDelta: {x: 70.46001, y: 28.9}
+  m_AnchoredPosition: {x: 10, y: 7.7}
+  m_SizeDelta: {x: 55.5, y: 28.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1796289593
 MonoBehaviour:
@@ -78061,7 +78060,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -36.865883, y: 0, z: -10.536652, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -81372,7 +81371,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2.2, y: 8}
-  m_SizeDelta: {x: 137.3, y: 151.2}
+  m_SizeDelta: {x: 100.1, y: 151.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1863041798
 MonoBehaviour:
@@ -98038,8 +98037,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.061417148, y: -0.70433474, z: 0.061399616, w: 0.70453584}
-  m_LocalPosition: {x: 0.000030517578, y: 0, z: 0}
+  m_LocalRotation: {x: 0.061417215, y: -0.7043347, z: 0.061399683, w: 0.7045358}
+  m_LocalPosition: {x: 0.000061035156, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -101677,7 +101676,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6310855923633310631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07418841, y: -0.7031049, z: 0.07416724, w: 0.70330566}
+  m_LocalRotation: {x: 0.07418842, y: -0.7031049, z: 0.074167244, w: 0.70330566}
   m_LocalPosition: {x: 0.000015258789, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -102712,7 +102711,7 @@ MonoBehaviour:
   maxDistanceFromPlayer: 3
   levitationRotationSpeed: 5
   _viewRadius: 10
-  _viewAngle: 85
+  _viewAngle: 145
   colectables:
   - {fileID: 1471389672}
   - {fileID: 420215912}
@@ -102755,7 +102754,6 @@ MonoBehaviour:
   _damageLight: {fileID: 151228313}
   _damageMaterial1: {fileID: 2100000, guid: e027d6efbc0765f419d47e9e4681e053, type: 2}
   _damageMaterial2: {fileID: 2100000, guid: a10a19aa3eed76f47904e814f803f711, type: 2}
-  _pauseMenu: {fileID: 1364714279}
   bodyRender: []
   _projectorPosition: {fileID: 8473917384596604533}
   _module1: {fileID: 7846711420864475314}
@@ -104905,7 +104903,6 @@ MonoBehaviour:
   profundidadOjoDerecha: 0.006
   sonidoEncender: {fileID: 8300000, guid: 3aac1602de06ff84da2b82ad0f551367, type: 3}
   sonidoApagar: {fileID: 8300000, guid: 3aac1602de06ff84da2b82ad0f551367, type: 3}
-  _pauseMenu: {fileID: 1364714279}
 --- !u!82 &8715036660305849648
 AudioSource:
   m_ObjectHideFlags: 0
